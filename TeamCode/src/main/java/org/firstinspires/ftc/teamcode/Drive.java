@@ -19,7 +19,9 @@ public class Drive extends OpMode {
     double maxPower = 1;
     double steerMagnitude=0;
     public void runMotors(double Left0, double Left1, double Right0, double Right1){
-
+        if (Left0!=0&&Left1!=0&&Right0!=0&&Right1!=0) {
+            steerMagnitude *= 2 * Math.max(Math.max(Left0, Left1), Math.max(Right0, Right1));
+        }
         Left0=Left0+steerMagnitude;
         Left1=Left1+steerMagnitude;
         Right0=Right0-steerMagnitude;
@@ -61,8 +63,7 @@ public class Drive extends OpMode {
         double var1= (lefty-leftx)
                 /Math.sqrt(2);
         double var2= (lefty+leftx)/Math.sqrt(2);
-        steerMagnitude=rightx*1.5;
-
+        steerMagnitude=rightx;
         if (leftx == 0 && lefty==0) {
             runMotors(0,0,0,0);
         }
@@ -73,7 +74,7 @@ public class Drive extends OpMode {
             maxPower=1;
         }
         else if (gamepad1.left_bumper){
-            maxPower=.5;
+            maxPower=.4;
         }
 
     }
