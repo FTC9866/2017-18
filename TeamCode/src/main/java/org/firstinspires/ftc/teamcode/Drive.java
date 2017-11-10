@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 /**
@@ -16,11 +18,12 @@ public class Drive extends OpMode {
     DcMotor lmotor0;
     DcMotor rmotor1;
     DcMotor lmotor1;
+    ColorSensor colorSensor;
     double maxPower = 1;
     double steerMagnitude=0;
     public void runMotors(double Left0, double Left1, double Right0, double Right1){
         if (Left0!=0&&Left1!=0&&Right0!=0&&Right1!=0) {
-            steerMagnitude *= 2 * Math.max(Math.max(Left0, Left1), Math.max(Right0, Right1));
+            steerMagnitude *= 2 * -Math.max(Math.max(Left0, Left1), Math.max(Right0, Right1));
         }
         Left0=Left0+steerMagnitude;
         Left1=Left1+steerMagnitude;
@@ -51,6 +54,9 @@ public class Drive extends OpMode {
         lmotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rmotor0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rmotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Servo cube1;
+        Servo cube2;
+        colorSensor = hardwareMap.colorSensor.get("colorsensor");
     }
     public void loop(){
 
@@ -60,8 +66,7 @@ public class Drive extends OpMode {
         double rightx = -gamepad1.right_stick_x;
         double rtrigger = -gamepad1.right_trigger;
         double ltrigger = -gamepad1.left_trigger;
-        double var1= (lefty-leftx)
-                /Math.sqrt(2);
+        double var1= (lefty-leftx)/Math.sqrt(2);
         double var2= (lefty+leftx)/Math.sqrt(2);
         steerMagnitude=rightx;
         if (leftx == 0 && lefty==0) {
@@ -76,6 +81,11 @@ public class Drive extends OpMode {
         else if (gamepad1.left_bumper){
             maxPower=.4;
         }
+        if(){
 
+        }
+        telemetry.addData("Red",colorSensor.red());
+        telemetry.addData("Green",colorSensor.green());
+        telemetry.addData("Blue",colorSensor.blue());
     }
 }
