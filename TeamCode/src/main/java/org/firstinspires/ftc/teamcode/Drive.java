@@ -18,6 +18,8 @@ public class Drive extends OpMode {
     DcMotor lmotor0;
     DcMotor rmotor1;
     DcMotor lmotor1;
+    Servo cube1;
+    Servo cube2;
     ColorSensor colorSensor;
     double maxPower = 1;
     double steerMagnitude=0;
@@ -44,8 +46,8 @@ public class Drive extends OpMode {
         rmotor0 = hardwareMap.dcMotor.get("rmotor0");
         lmotor1 = hardwareMap.dcMotor.get("lmotor1");
         rmotor1 = hardwareMap.dcMotor.get("rmotor1");
-        lmotor0.setDirection(DcMotor.Direction.REVERSE);
-        lmotor1.setDirection(DcMotor.Direction.REVERSE);
+        rmotor0.setDirection(DcMotor.Direction.REVERSE);
+        rmotor1.setDirection(DcMotor.Direction.REVERSE);
         lmotor0.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lmotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rmotor0.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -54,8 +56,8 @@ public class Drive extends OpMode {
         lmotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rmotor0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rmotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Servo cube1;
-        Servo cube2;
+        cube1 = hardwareMap.servo.get("cube1");
+        cube2 = hardwareMap.servo.get("cube2");
         colorSensor = hardwareMap.colorSensor.get("colorsensor");
     }
     public void loop(){
@@ -81,7 +83,7 @@ public class Drive extends OpMode {
         else if (gamepad1.left_bumper){
             maxPower=.4;
         }
-        if(){
+        if (gamepad2.x) {
 
         }
         telemetry.addData("Red",colorSensor.red());
