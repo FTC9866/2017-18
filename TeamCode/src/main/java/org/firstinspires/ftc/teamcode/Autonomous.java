@@ -68,17 +68,17 @@ public class Autonomous extends OpMode {
                 state=state.turn;
             break;
             case turn:
-                if (colorSensor.red() > colorSensor.blue()) {
-                    lmotor0.setTargetPosition(150);
-                    lmotor1.setTargetPosition(150);
+                if (colorSensor.red() < colorSensor.blue()) {
+                    lmotor0.setTargetPosition(500);
+                    lmotor1.setTargetPosition(500);
                     lmotor0.setPower(1);
                     lmotor1.setPower(1);
 
                 }
-                else if (colorSensor.blue() > colorSensor.red()) {
+                else if (colorSensor.blue() < colorSensor.red()) {
 
-                    rmotor0.setTargetPosition(150);
-                    rmotor1.setTargetPosition(150);
+                    rmotor0.setTargetPosition(500);
+                    rmotor1.setTargetPosition(500);
                     rmotor0.setPower(1);
                     rmotor1.setPower(1);
                     state=state.stop;

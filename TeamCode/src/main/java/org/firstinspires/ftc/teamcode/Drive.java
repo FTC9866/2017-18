@@ -25,12 +25,12 @@ public class Drive extends OpMode {
     double steerMagnitude=0;
     public void runMotors(double Left0, double Left1, double Right0, double Right1){
         if (Left0!=0&&Left1!=0&&Right0!=0&&Right1!=0) {
-            steerMagnitude *= 2 * -Math.max(Math.max(Left0, Left1), Math.max(Right0, Right1));
+            steerMagnitude *= -2 * Math.max(Math.max(Left0, Left1), Math.max(Right0, Right1));
         }
-        Left0=Left0+steerMagnitude;
-        Left1=Left1+steerMagnitude;
-        Right0=Right0-steerMagnitude;
-        Right1=Right1-steerMagnitude;
+        Left0=Left0-steerMagnitude;
+        Left1=Left1-steerMagnitude;
+        Right0=Right0+steerMagnitude;
+        Right1=Right1+steerMagnitude;
         //make sure no exception thrown if power > 0
         Left0 = Range.clip(Left0, -maxPower, maxPower);
         Left1 = Range.clip(Left1, -maxPower, maxPower);
@@ -58,7 +58,9 @@ public class Drive extends OpMode {
         rmotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         cube1 = hardwareMap.servo.get("cube1");
         cube2 = hardwareMap.servo.get("cube2");
-        colorSensor = hardwareMap.colorSensor.get("colorsensor");
+        colorSensor = hardwareMap.colorSensor.get("colorSensor");
+        cube1.setPosition(0);
+        cube2.setPosition(1);
     }
     public void loop(){
 
@@ -70,12 +72,11 @@ public class Drive extends OpMode {
         double ltrigger = -gamepad1.left_trigger;
         double var1= (lefty-leftx)/Math.sqrt(2);
         double var2= (lefty+leftx)/Math.sqrt(2);
-        steerMagnitude=rightx;
-        if (leftx == 0 && lefty==0) {
-            runMotors(0,0,0,0);
-        }
+        steerMagnitude = rightx;
         if (leftx!=0 || lefty!=0){
             runMotors(-var1,-var2,-var2,-var1);
+        } else {
+            runMotors(0,0,0,0);
         }
         if (gamepad1.right_bumper){
             maxPower=1;
@@ -83,8 +84,13 @@ public class Drive extends OpMode {
         else if (gamepad1.left_bumper){
             maxPower=.4;
         }
+        if (gamepad2.y) {
+            cube1.setPosition(0.0);
+            cube2.setPosition(1);
+        }
         if (gamepad2.x) {
-
+            cube1.setPosition(.5);
+            cube2.setPosition(.5);
         }
         telemetry.addData("Red",colorSensor.red());
         telemetry.addData("Green",colorSensor.green());
