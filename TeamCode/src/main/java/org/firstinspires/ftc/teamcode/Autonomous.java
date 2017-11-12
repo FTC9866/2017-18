@@ -1,31 +1,30 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 
-
-/**
- * Created by Andrew on 11/10/2017.
- */
 @TeleOp(name="Autonomous", group="TeleOp")
 
-public class Autonomous extends VirusAuto {
-
+public class Autonomous extends VirusMethods {
+    enum state  {dropArm,knockJewel,stop}
+    state state;
+    public void start(){
+        state=state.dropArm;
+        lmotor0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lmotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rmotor0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rmotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
     @Override
     public void loop(){
-
         switch (state) {
-
             case dropArm:
                 jewelKnocker.setPosition(1);
-                try {
-                    Thread.sleep(1000);
-                }
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                waitTime(1000);
                 state=state.knockJewel;
             break;
+
             case knockJewel:
                 if (colorSensor.red() < colorSensor.blue()) {
                     setMotorPositionsINCH(1,1,1,1,1);
@@ -37,12 +36,11 @@ public class Autonomous extends VirusAuto {
                     state=state.stop;
                 }
             break;
+
             case stop:
                 telemetry.addData("done","done");
                 runMotors(0,0,0,0);
                 break;
-
         }
-
     }
 }
