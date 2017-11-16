@@ -55,7 +55,7 @@ public abstract class VirusMethods extends VirusHardware{
         rmotor0.setTargetPosition((int)(Right0/inPerPulse));
         rmotor1.setTargetPosition((int)(Right1/inPerPulse));
         runMotors(power,power,power,power);
-        if (!lmotor0.isBusy()&&!lmotor1.isBusy()&&!rmotor0.isBusy&&!rmotor1.isBusy){
+        if (!lmotor0.isBusy()&&!lmotor1.isBusy()&&!rmotor0.isBusy()&&!rmotor1.isBusy()){
             return true;
         }
         else{
