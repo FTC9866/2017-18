@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 public abstract class VirusMethods extends VirusHardware{
+    int counter=0;
     public void runMotors(double Left0, double Left1, double Right0, double Right1, double steerMagnitude){
         if (Left0!=0&&Left1!=0&&Right0!=0&&Right1!=0) {
             steerMagnitude *= -2 * Math.max(Math.max(Left0, Left1), Math.max(Right0, Right1));
@@ -38,29 +39,27 @@ public abstract class VirusMethods extends VirusHardware{
         lmotor1.setPower(Left1);
     }
 
-    public void setMotorPositions(int Left0, int Left1, int Right0, int Right1, double power){
-        resetEncoder();
-        lmotor0.setTargetPosition(Left0);
-        lmotor1.setTargetPosition(Left1);
-        rmotor0.setTargetPosition(Right0);
-        rmotor1.setTargetPosition(Right1);
-        runMotors(power,power,power,power);
-        while (lmotor0.isBusy()||lmotor1.isBusy()||rmotor0.isBusy()||rmotor1.isBusy());
+    public boolean setMotorPositions(int Left0, int Left1, int Right0, int Right1, double power) {
+        if (counter == 0) { //make sure this is only run once
+            lmotor0.setTargetPosition(Left0);
+            lmotor1.setTargetPosition(Left1);
+            rmotor0.setTargetPosition(Right0);
+            rmotor1.setTargetPosition(Right1);
+            runMotors(power, power, power, power);
+        }
+        return !lmotor0.isBusy() && !lmotor1.isBusy() && !rmotor0.isBusy() && !rmotor1.isBusy(); //returns true when motors are not busy
     }
 
     public boolean setMotorPositionsINCH(double Left0, double Left1, double Right0, double Right1, double power){
-        resetEncoder();
-        lmotor0.setTargetPosition((int)(Left0/inPerPulse));
-        lmotor1.setTargetPosition((int)(Left1/inPerPulse));
-        rmotor0.setTargetPosition((int)(Right0/inPerPulse));
-        rmotor1.setTargetPosition((int)(Right1/inPerPulse));
-        runMotors(power,power,power,power);
-        if (!lmotor0.isBusy()&&!lmotor1.isBusy()&&!rmotor0.isBusy()&&!rmotor1.isBusy()){
-            return true;
+        if (counter == 0){ //make sure this is only run once
+            runMotors(power,power,power,power);
+            lmotor0.setTargetPosition((int)(Left0/inPerPulse));
+            lmotor1.setTargetPosition((int)(Left1/inPerPulse));
+            rmotor0.setTargetPosition((int)(Right0/inPerPulse));
+            rmotor1.setTargetPosition((int)(Right1/inPerPulse));
+            counter++;
         }
-        else{
-            return false;
-        }
+        return !lmotor0.isBusy() && !lmotor1.isBusy() && !rmotor0.isBusy() && !rmotor1.isBusy(); //returns true when motors are not busy
     }
 
     public void resetEncoder(){
@@ -69,7 +68,8 @@ public abstract class VirusMethods extends VirusHardware{
         lmotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rmotor0.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rmotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        while (lmotor0.isBusy()||lmotor1.isBusy()||rmotor0.isBusy()||rmotor1.isBusy());
+        counter=0; // sets counter = 0 for setMotorPosition method
+        while (lmotor0.isBusy()||lmotor1.isBusy()||rmotor0.isBusy()||rmotor1.isBusy()); //waits until encoders finish reset
     }
 
     public void waitTime(int time){

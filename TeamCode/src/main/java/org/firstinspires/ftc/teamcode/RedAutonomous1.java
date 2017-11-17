@@ -4,10 +4,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 
-@TeleOp(name="Autonomous", group="TeleOp")
+@TeleOp(name="RedAutonomous1", group="TeleOp")
 
-public class Autonomous extends VirusMethods {
-    enum state  {dropArm,knockJewel,stop}
+public class RedAutonomous1 extends VirusMethods {
+    enum state  {dropArm,scanJewel,knockJewelRight, knockJewelLeft, stop}
     state state;
     public void start(){
         state=state.dropArm;
@@ -22,20 +22,31 @@ public class Autonomous extends VirusMethods {
             case dropArm:
                 jewelKnocker.setPosition(1);
                 waitTime(1000);
-                state=state.knockJewel;
+                resetEncoder();
+                state=state.scanJewel;
             break;
 
-            case knockJewel:
+            case scanJewel:
                 if (colorSensor.red() < colorSensor.blue()) {
-                    setMotorPositionsINCH(1,1,1,1,1);
-                    state=state.stop;
+                    state=state.knockJewelRight;
 
                 }
                 else if (colorSensor.blue() < colorSensor.red()) {
-                    setMotorPositionsINCH(-1,-1,-1,-1,-1);
-                    state=state.stop;
+                    state=state.knockJewelLeft;
                 }
             break;
+
+            case knockJewelRight:
+                if (setMotorPositionsINCH(-3,-3,-3,-3,-1)){
+                    state=state.stop;
+                }
+                break;
+
+            case knockJewelLeft:
+                if (setMotorPositionsINCH(3,3,3,3,1)){
+                    state=state.stop;
+                }
+                break;
 
             case stop:
                 telemetry.addData("done","done");
