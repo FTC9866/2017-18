@@ -53,5 +53,6 @@ public class RedAutonomous1 extends VirusMethods {
                 runMotors(0,0,0,0);
                 break;
         }
+        Telemetry();
     }
 }

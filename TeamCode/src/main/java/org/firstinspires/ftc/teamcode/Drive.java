@@ -34,8 +34,6 @@ public class Drive extends VirusMethods {
             cube1.setPosition(.5);
             cube2.setPosition(.5);
         }
-        telemetry.addData("Red",colorSensor.red());
-        telemetry.addData("Green",colorSensor.green());
-        telemetry.addData("Blue",colorSensor.blue());
+        Telemetry();
     }
 }

@@ -93,4 +93,22 @@ public abstract class VirusMethods extends VirusHardware{
         var1= (lefty-leftx)*magnitude/scalar;
         var2= (lefty+leftx)*magnitude/scalar;
     }
+    public void Telemetry(){
+        telemetry.addData("Red",colorSensor.red());
+        telemetry.addData("Green",colorSensor.green());
+        telemetry.addData("Blue",colorSensor.blue());
+
+        telemetry.addData("lMotor0 Encoder",lmotor0.getCurrentPosition());
+        telemetry.addData("lMotor1 Encoder",lmotor1.getCurrentPosition());
+        telemetry.addData("rMotor0 Encoder",rmotor0.getCurrentPosition());
+        telemetry.addData("rMotor1 Encoder",rmotor1.getCurrentPosition());
+
+        telemetry.addData("lMotor0 Target",lmotor0.getTargetPosition());
+        telemetry.addData("lMotor1 Target",lmotor1.getTargetPosition());
+        telemetry.addData("rMotor0 Target",rmotor0.getTargetPosition());
+        telemetry.addData("rMotor1 Target",rmotor1.getTargetPosition());
+
+
+
+    }
 }
