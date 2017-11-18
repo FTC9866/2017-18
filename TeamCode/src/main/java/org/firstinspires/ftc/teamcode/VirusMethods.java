@@ -71,6 +71,10 @@ public abstract class VirusMethods extends VirusHardware{
         rmotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         counter=0; // sets counter = 0 for setMotorPosition method
         while (lmotor0.isBusy()||lmotor1.isBusy()||rmotor0.isBusy()||rmotor1.isBusy()); //waits until encoders finish reset
+        lmotor0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lmotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rmotor0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rmotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public void waitTime(int time){
