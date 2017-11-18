@@ -46,20 +46,21 @@ public abstract class VirusMethods extends VirusHardware{
             rmotor0.setTargetPosition(Right0);
             rmotor1.setTargetPosition(Right1);
             runMotors(power, power, power, power);
+            counter++;
         }
         return !lmotor0.isBusy() && !lmotor1.isBusy() && !rmotor0.isBusy() && !rmotor1.isBusy(); //returns true when motors are not busy
     }
 
     public boolean setMotorPositionsINCH(double Left0, double Left1, double Right0, double Right1, double power){
         if (counter == 0){ //make sure this is only run once
-            runMotors(power,power,power,power);
             lmotor0.setTargetPosition((int)(Left0/inPerPulse));
             lmotor1.setTargetPosition((int)(Left1/inPerPulse));
             rmotor0.setTargetPosition((int)(Right0/inPerPulse));
             rmotor1.setTargetPosition((int)(Right1/inPerPulse));
+            runMotors(power,power,power,power);
             counter++;
         }
-        return !lmotor0.isBusy() && !lmotor1.isBusy() && !rmotor0.isBusy() && !rmotor1.isBusy(); //returns true when motors are not busy
+        return (!lmotor0.isBusy() && !lmotor1.isBusy() && !rmotor0.isBusy() && !rmotor1.isBusy()); //returns true when motors are not busy
     }
 
     public void resetEncoder(){
