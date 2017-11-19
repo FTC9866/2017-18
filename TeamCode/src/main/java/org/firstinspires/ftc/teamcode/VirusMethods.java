@@ -10,12 +10,12 @@ public abstract class VirusMethods extends VirusHardware{
     int counter=0;
     public void runMotors(double Left0, double Left1, double Right0, double Right1, double steerMagnitude){
         if (Left0!=0&&Left1!=0&&Right0!=0&&Right1!=0) {
-            steerMagnitude *= -2 * Math.max(Math.max(Left0, Left1), Math.max(Right0, Right1));
+            steerMagnitude *= 2 * Math.max(Math.max(Left0, Left1), Math.max(Right0, Right1));
         }
-        Left0=Left0-steerMagnitude;
-        Left1=Left1-steerMagnitude;
-        Right0=Right0+steerMagnitude;
-        Right1=Right1+steerMagnitude;
+        Left0=Left0+steerMagnitude;
+        Left1=Left1+steerMagnitude;
+        Right0=Right0-steerMagnitude;
+        Right1=Right1-steerMagnitude;
         //make sure no exception thrown if power > 0
         Left0 = Range.clip(Left0, -maxPower, maxPower);
         Left1 = Range.clip(Left1, -maxPower, maxPower);
@@ -90,7 +90,7 @@ public abstract class VirusMethods extends VirusHardware{
         lefty = -gamepad1.left_stick_y;
         leftx = -gamepad1.left_stick_x;
         righty = -gamepad1.right_stick_y;
-        rightx = Math.pow(-gamepad1.right_stick_x , 3/5); //raises value to the 3/5 power for better steering control
+        rightx = -gamepad1.right_stick_x;
         rtrigger = -gamepad1.right_trigger;
         ltrigger = -gamepad1.left_trigger;
         double scalar = Math.max(Math.abs(lefty-leftx), Math.abs(lefty+leftx)); //scalar and magnitude scale the motor powers based on distance from joystick origin

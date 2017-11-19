@@ -33,8 +33,8 @@ public abstract class VirusHardware extends OpMode {
         rmotor0 = hardwareMap.dcMotor.get("rmotor0");
         lmotor1 = hardwareMap.dcMotor.get("lmotor1");
         rmotor1 = hardwareMap.dcMotor.get("rmotor1");
-        rmotor0.setDirection(DcMotor.Direction.REVERSE);
-        rmotor1.setDirection(DcMotor.Direction.REVERSE);
+        lmotor0.setDirection(DcMotor.Direction.REVERSE);
+        lmotor1.setDirection(DcMotor.Direction.REVERSE);
         lmotor0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lmotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rmotor0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

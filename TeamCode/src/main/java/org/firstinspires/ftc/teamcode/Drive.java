@@ -16,7 +16,7 @@ public class Drive extends VirusMethods {
     public void loop(){
         updateControllerValues();
         if (leftx!=0 || lefty!=0){
-            runMotors(-var1,-var2,-var2,-var1,rightx); //var1 and 2 are computed values found in theUpdateControllerValues method
+            runMotors(var1,var2,var2,var1,rightx); //var1 and 2 are computed values found in theUpdateControllerValues method
         } else {
             runMotors(0,0,0,0,rightx);
         }
