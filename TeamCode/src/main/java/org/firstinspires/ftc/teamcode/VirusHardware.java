@@ -14,12 +14,7 @@ public abstract class VirusHardware extends OpMode {
     DcMotor lmotor0;
     DcMotor rmotor1;
     DcMotor lmotor1;
-    final double wheelDiam=4.0;
-    final double gearRatio=1.5;
-    final double pulsePerRotation=280.0;
-    final double inPerWheelRotation=wheelDiam * Math.PI;
-    final double inPerMotorRotation=inPerWheelRotation*gearRatio;
-    final double inPerPulse=inPerMotorRotation/pulsePerRotation;
+    final double inPerPulse=.0175; //experimentally determined value
     Servo jewelKnocker;
     ColorSensor colorSensor;
     Servo cube1;
@@ -51,6 +46,7 @@ public abstract class VirusHardware extends OpMode {
         cube1.setPosition(0);
         cube2.setPosition(1);
         jewelKnocker.setPosition(0);
+        colorSensor.enableLed(false);
     }
 
 }

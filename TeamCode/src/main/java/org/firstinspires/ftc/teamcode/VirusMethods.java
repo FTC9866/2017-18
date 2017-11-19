@@ -40,7 +40,7 @@ public abstract class VirusMethods extends VirusHardware{
     }
 
     public boolean setMotorPositions(int Left0, int Left1, int Right0, int Right1, double power) {
-        if (counter == 0) { //make sure this is only run once
+        if (counter == 0) { //makes sure this is only run once, reset back to 0 when OpMode starts or resetEncoders is called
             lmotor0.setTargetPosition(Left0);
             lmotor1.setTargetPosition(Left1);
             rmotor0.setTargetPosition(Right0);
@@ -52,7 +52,7 @@ public abstract class VirusMethods extends VirusHardware{
     }
 
     public boolean setMotorPositionsINCH(double Left0, double Left1, double Right0, double Right1, double power){
-        if (counter == 0){ //make sure this is only run once
+        if (counter == 0){ //makes sure this is only run once, reset back to 0 when OpMode starts or resetEncoders is called
             lmotor0.setTargetPosition((int)(Left0/inPerPulse));
             lmotor1.setTargetPosition((int)(Left1/inPerPulse));
             rmotor0.setTargetPosition((int)(Right0/inPerPulse));
@@ -90,10 +90,10 @@ public abstract class VirusMethods extends VirusHardware{
         lefty = -gamepad1.left_stick_y;
         leftx = -gamepad1.left_stick_x;
         righty = -gamepad1.right_stick_y;
-        rightx = -gamepad1.right_stick_x;
+        rightx = Math.pow(-gamepad1.right_stick_x , 3/5); //raises value to the 3/5 power for better steering control
         rtrigger = -gamepad1.right_trigger;
         ltrigger = -gamepad1.left_trigger;
-        double scalar = Math.max(Math.abs(lefty-leftx), Math.abs(lefty+leftx));
+        double scalar = Math.max(Math.abs(lefty-leftx), Math.abs(lefty+leftx)); //scalar and magnitude scale the motor powers based on distance from joystick origin
         double magnitude = Math.sqrt(lefty*lefty+leftx*leftx);
         var1= (lefty-leftx)*magnitude/scalar;
         var2= (lefty+leftx)*magnitude/scalar;

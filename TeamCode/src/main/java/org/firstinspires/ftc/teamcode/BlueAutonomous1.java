@@ -4,9 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 
-@TeleOp(name="RedAutonomous1", group="TeleOp")
+@TeleOp(name="BlueAutonomous1", group="TeleOp")
 
-public class RedAutonomous1 extends VirusMethods {
+public class BlueAutonomous1 extends VirusMethods {
     enum state  {dropArm,scanJewel,knockJewelRight, knockJewelLeft, stop, goToPosition, debug}
     state state;
     boolean setMotor;
@@ -31,10 +31,10 @@ public class RedAutonomous1 extends VirusMethods {
             case scanJewel:
                 if (colorSensor.red() < colorSensor.blue()) { //checks to see if object is more red or more blue
                     colorSensor.enableLed(false);
-                    state=state.knockJewelRight;
+                    state=state.knockJewelLeft;
                 }
                 else if (colorSensor.blue() < colorSensor.red()) {
-                    state=state.knockJewelLeft;
+                    state=state.knockJewelRight;
                 }
                 break;
 
