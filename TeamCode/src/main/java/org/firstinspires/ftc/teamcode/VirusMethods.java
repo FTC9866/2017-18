@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.util.Range;
 
 public abstract class VirusMethods extends VirusHardware{
     int counter=0;
+    double turnRate;
     public void runMotors(double Left0, double Left1, double Right0, double Right1, double steerMagnitude){
         if (Left0!=0&&Left1!=0&&Right0!=0&&Right1!=0) {
             steerMagnitude *= 2 * Math.max(Math.max(Left0, Left1), Math.max(Right0, Right1));
@@ -61,6 +62,23 @@ public abstract class VirusMethods extends VirusHardware{
             counter++;
         }
         return (!lmotor0.isBusy() && !lmotor1.isBusy() && !rmotor0.isBusy() && !rmotor1.isBusy()); //returns true when motors are not busy
+    }
+
+    public boolean turn (double angle, double speed){
+        turnRate=speed/angle*Math.abs(gyroSensor.getHeading()-angle);
+        if (angle<=180) {
+            runMotors(turnRate, turnRate, -turnRate, -turnRate);
+            if (gyroSensor.getHeading()>=angle){
+                return true;
+            }
+        }//speed is always positive
+        if (angle>180){
+            runMotors(-turnRate, -turnRate, turnRate, turnRate);
+            if (gyroSensor.getHeading()<=angle){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void resetEncoder(){

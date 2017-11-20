@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /**
@@ -17,6 +18,7 @@ public abstract class VirusHardware extends OpMode {
     final double inPerPulse=.0175; //experimentally determined value
     Servo jewelKnocker;
     ColorSensor colorSensor;
+    GyroSensor gyroSensor;
     Servo cube1;
     Servo cube2;
     double maxPower=1;
@@ -43,6 +45,9 @@ public abstract class VirusHardware extends OpMode {
         cube2 = hardwareMap.servo.get("cube2");
         jewelKnocker = hardwareMap.servo.get("jewelKnocker");
         colorSensor = hardwareMap.colorSensor.get("colorSensor");
+        gyroSensor = hardwareMap.gyroSensor.get("gyroSensor");
+        gyroSensor.calibrate();
+        while (gyroSensor.isCalibrating()); bb
         cube1.setPosition(0);
         cube2.setPosition(1);
         jewelKnocker.setPosition(0);
