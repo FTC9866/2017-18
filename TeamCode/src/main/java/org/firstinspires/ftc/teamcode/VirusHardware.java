@@ -18,9 +18,11 @@ public abstract class VirusHardware extends OpMode {
     final double inPerPulse=.0175; //experimentally determined value
     Servo jewelKnocker;
     ColorSensor colorSensor;
-    GyroSensor gyroSensor;
     Servo cube1;
     Servo cube2;
+    Servo liftRight;
+    Servo liftLeft;
+    GyroSensor gyroSensor;
     double maxPower=1;
     double lefty;
     double leftx;
@@ -43,15 +45,18 @@ public abstract class VirusHardware extends OpMode {
         rmotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         cube1 = hardwareMap.servo.get("cube1");
         cube2 = hardwareMap.servo.get("cube2");
+        liftRight = hardwareMap.servo.get("liftRight");
+        liftLeft = hardwareMap.servo.get("liftLeft");
         jewelKnocker = hardwareMap.servo.get("jewelKnocker");
         colorSensor = hardwareMap.colorSensor.get("colorSensor");
-        gyroSensor = hardwareMap.gyroSensor.get("gyroSensor");
-        gyroSensor.calibrate();
-        while (gyroSensor.isCalibrating()); 
+        gyroSensor = hardwareMap.gyroSensor.get("gryoSensor");
+        while (gyroSensor.isCalibrating());
         cube1.setPosition(0);
         cube2.setPosition(1);
+        liftLeft.setPosition(0);
+        liftRight.setPosition(0);
         jewelKnocker.setPosition(0);
-        colorSensor.enableLed(false);
+
     }
 
 }

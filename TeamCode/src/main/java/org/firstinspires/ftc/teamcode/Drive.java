@@ -34,6 +34,14 @@ public class Drive extends VirusMethods {
             cube1.setPosition(.5);
             cube2.setPosition(.5);
         }
+        if (gamepad2.a){
+            liftLeft.setPosition(.3);
+            liftRight.setPosition(.3 * 18.8/20); // sync motors
+        }
+        if (gamepad2.b){
+            liftLeft.setPosition(0);
+            liftRight.setPosition(0);
+        }
         Telemetry();
     }
 }
