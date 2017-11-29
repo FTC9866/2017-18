@@ -47,11 +47,12 @@ public class BlueAutonomous1 extends VirusMethods {
         relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
         relicTrackables.activate();
-        vuMark = RelicRecoveryVuMark.from(relicTemplate);
-        pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
+
     }
     @Override
     public void loop() {
+        vuMark = RelicRecoveryVuMark.from(relicTemplate);
+        pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
         if (pose != null) {
             VectorF trans = pose.getTranslation();
             Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
@@ -69,7 +70,7 @@ public class BlueAutonomous1 extends VirusMethods {
         switch (state) {
             case dropArm:
 
-                jewelKnocker.setPosition(0.75);
+                jewelKnocker.setPosition(0.65);
                 colorSensor.enableLed(true);
                 waitTime(1000);
                 resetEncoder();
