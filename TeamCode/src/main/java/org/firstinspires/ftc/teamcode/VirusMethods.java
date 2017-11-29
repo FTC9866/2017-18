@@ -6,6 +6,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+
 public abstract class VirusMethods extends VirusHardware{
     int counter=0;
     double turnRate;
@@ -29,6 +37,10 @@ public abstract class VirusMethods extends VirusHardware{
     }
 
     public void runMotors(double Left0, double Left1, double Right0, double Right1){
+        lmotor0.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lmotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rmotor0.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rmotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //make sure no exception thrown if power > 0
         Left0 = Range.clip(Left0, -maxPower, maxPower);
         Left1 = Range.clip(Left1, -maxPower, maxPower);
@@ -53,6 +65,10 @@ public abstract class VirusMethods extends VirusHardware{
     }
 
     public boolean setMotorPositionsINCH(double Left0, double Left1, double Right0, double Right1, double power){
+        lmotor0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lmotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rmotor0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rmotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         if (counter == 0){ //makes sure this is only run once, reset back to 0 when OpMode starts or resetEncoders is called
             lmotor0.setTargetPosition((int)(Left0/inPerPulse));
             lmotor1.setTargetPosition((int)(Left1/inPerPulse));
@@ -115,6 +131,12 @@ public abstract class VirusMethods extends VirusHardware{
         double magnitude = Math.sqrt(lefty*lefty+leftx*leftx);
         var1= (lefty-leftx)*magnitude/scalar;
         var2= (lefty+leftx)*magnitude/scalar;
+    }
+    public void vuforia(){
+
+    }
+    String format(OpenGLMatrix transformationMatrix) {
+        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
     }
     public void Telemetry(){
         telemetry.addData("Red",colorSensor.red());
