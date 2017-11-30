@@ -20,7 +20,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 @TeleOp(name="BlueAutonomous1", group="TeleOp")
 
 public class BlueAutonomous1 extends VirusMethods {
-    enum state  {dropArm,scanJewel,knockJewelRight, knockJewelLeft, stop, goToPosition, debug, moveUnitlScanned}
+    enum state  {dropArm,scanJewel,knockJewelRight, knockJewelLeft, stop, goToPosition, debug, alignStraight, moveUnitlScanned}
     state state;
     boolean setMotor;
     public static final String TAG = "Vuforia VuMark Sample";
@@ -31,6 +31,7 @@ public class BlueAutonomous1 extends VirusMethods {
     VuforiaTrackable relicTemplate;
     RelicRecoveryVuMark vuMark;
     OpenGLMatrix pose;
+    RelicRecoveryVuMark VuMarkStored;
 
     public void start() {
         lmotor0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -104,10 +105,15 @@ public class BlueAutonomous1 extends VirusMethods {
                 runMotors(.1,.1,.1,.1);
                     if(vuMark != RelicRecoveryVuMark.UNKNOWN){
                         telemetry.addData("VuMark", "%s visible", vuMark);
-                        state = state.stop;
+                        VuMarkStored = vuMark;
+                        state = state.alignStraight;
                     }
                 break;
-
+            case alignStraight:
+                if (turn(0,0.5)) {
+                    state = state.stop;
+                }
+                break;
             case debug:
                 //telemetry.addData("done","done");
                 telemetry.addData("setMotor returns", setMotor);
