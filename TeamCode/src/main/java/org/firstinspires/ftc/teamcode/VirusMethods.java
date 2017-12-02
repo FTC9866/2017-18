@@ -80,21 +80,41 @@ public abstract class VirusMethods extends VirusHardware{
         return (!lmotor0.isBusy() && !lmotor1.isBusy() && !rmotor0.isBusy() && !rmotor1.isBusy()); //returns true when motors are not busy
     }
 
-    public boolean turn (double angle, double speed){
+    public boolean turn (double angle, double speed) {
+        angle = angleDistance(angle, gyroSensor.getHeading());
         turnRate=speed/angle*Math.abs(gyroSensor.getHeading()-angle);
-        if (angle<=180) {
+        if (angle<180) {
             runMotors(turnRate, turnRate, -turnRate, -turnRate);
             if (gyroSensor.getHeading()>=angle){
                 return true;
             }
         }//speed is always positive
-        if (angle>180){
+        if (angle>0){
             runMotors(-turnRate, -turnRate, turnRate, turnRate);
             if (gyroSensor.getHeading()<=angle){
                 return true;
             }
         }
         return false;
+    }
+
+    private double angleDistance(double angle, double currentAngle) {
+        double relativeAngle;
+        if ((angle <= 360) && (angle >= 0)) {
+            if (currentAngle < 270 && currentAngle > 90 ){
+
+            }else if ((currentAngle >= 270) && (angle <= 90 && angle > 0)) {
+                relativeAngle = (angle - currentAngle);
+                return currentAngle;
+            } else if ((currentAngle <= 90 && currentAngle > 0) && (angle >= 270)) {
+
+            }
+        } else if (angle > 360) {
+            return angleDistance(angle - 360, currentAngle);
+        } else {
+            return angleDistance(-1*angle, currentAngle);
+        }
+        return 0;
     }
 
     public void resetEncoder(){
