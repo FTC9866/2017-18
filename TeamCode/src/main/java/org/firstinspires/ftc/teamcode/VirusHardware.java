@@ -6,6 +6,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+
 /**
  * Created by mzhang on 11/12/2017.
  */
@@ -32,6 +38,16 @@ public abstract class VirusHardware extends OpMode {
     double ltrigger;
     double var1;
     double var2;
+    public static final String TAG = "Vuforia VuMark Sample";
+    OpenGLMatrix lastLocation = null;
+    VuforiaLocalizer vuforia;
+    int cameraMonitorViewId;
+    VuforiaTrackables relicTrackables;
+    VuforiaTrackable relicTemplate;
+    RelicRecoveryVuMark vuMark;
+    OpenGLMatrix pose;
+    RelicRecoveryVuMark VuMarkStored;
+
     public void init(){
         lmotor0 = hardwareMap.dcMotor.get("lmotor0");
         rmotor0 = hardwareMap.dcMotor.get("rmotor0");
