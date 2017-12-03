@@ -17,6 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 public abstract class VirusMethods extends VirusHardware{
     int counter=0;
     double turnRate;
+    double maxDisplacement;
     public void runMotors(double Left0, double Left1, double Right0, double Right1, double steerMagnitude){
         if (Left0!=0&&Left1!=0&&Right0!=0&&Right1!=0) {
             steerMagnitude *= 2 * Math.max(Math.max(Left0, Left1), Math.max(Right0, Right1));
@@ -81,40 +82,22 @@ public abstract class VirusMethods extends VirusHardware{
     }
 
     public boolean turn (double angle, double speed) {
-        angle = angleDistance(angle, gyroSensor.getHeading());
-        turnRate=speed/angle*Math.abs(gyroSensor.getHeading()-angle);
-        if (angle<180) {
-            runMotors(turnRate, turnRate, -turnRate, -turnRate);
-            if (gyroSensor.getHeading()>=angle){
-                return true;
-            }
-        }//speed is always positive
-        if (angle>0){
-            runMotors(-turnRate, -turnRate, turnRate, turnRate);
-            if (gyroSensor.getHeading()<=angle){
-                return true;
-            }
+        double threshold = 2;
+        turnRate=(speed*angleDistance(angle, gyroSensor.getHeading())/90); //preferably, 90 is changed to the initial distance from the angle. I couldn't find a good way for that to work
+        runMotors(turnRate, turnRate, -turnRate, -turnRate);
+        if (-threshold<angle && angle<threshold)
+        {
+            return true;
         }
         return false;
     }
 
     private double angleDistance(double angle, double currentAngle) {
-        double relativeAngle;
-        if ((angle <= 360) && (angle >= 0)) {
-            if (currentAngle < 270 && currentAngle > 90 ){
-
-            }else if ((currentAngle >= 270) && (angle <= 90 && angle > 0)) {
-                relativeAngle = (angle - currentAngle);
-                return currentAngle;
-            } else if ((currentAngle <= 90 && currentAngle > 0) && (angle >= 270)) {
-
-            }
-        } else if (angle > 360) {
-            return angleDistance(angle - 360, currentAngle);
-        } else {
-            return angleDistance(-1*angle, currentAngle);
+        double distance=angle-currentAngle;
+        if (angle <-180){
+            distance+=180;
         }
-        return 0;
+        return distance;
     }
 
     public void resetEncoder(){
