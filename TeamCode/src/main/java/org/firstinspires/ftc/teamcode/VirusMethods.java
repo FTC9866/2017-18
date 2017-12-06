@@ -54,14 +54,24 @@ public abstract class VirusMethods extends VirusHardware{
         lmotor0.setPower(Left0);
         lmotor1.setPower(Left1);
     }
-
+    public void runMotorsAuto(double Left0, double Left1, double Right0, double Right1){
+        //make sure no exception thrown if power > 0
+        Left0 = Range.clip(Left0, -maxPower, maxPower);
+        Left1 = Range.clip(Left1, -maxPower, maxPower);
+        Right0 = Range.clip(Right0, -maxPower, maxPower);
+        Right1 = Range.clip(Right1, -maxPower, maxPower);
+        rmotor0.setPower(Right0);
+        rmotor1.setPower(Right1);
+        lmotor0.setPower(Left0);
+        lmotor1.setPower(Left1);
+    }
     public boolean setMotorPositions(int Left0, int Left1, int Right0, int Right1, double power) {
         if (counter == 0) { //makes sure this is only run once, reset back to 0 when OpMode starts or resetEncoders is called
             lmotor0.setTargetPosition(Left0);
             lmotor1.setTargetPosition(Left1);
             rmotor0.setTargetPosition(Right0);
             rmotor1.setTargetPosition(Right1);
-            runMotors(power, power, power, power);
+            runMotorsAuto(power, power, power, power);
             counter++;
         }
         return !lmotor0.isBusy() && !lmotor1.isBusy() && !rmotor0.isBusy() && !rmotor1.isBusy(); //returns true when motors are not busy
@@ -77,17 +87,17 @@ public abstract class VirusMethods extends VirusHardware{
             lmotor1.setTargetPosition((int)(Left1/inPerPulse));
             rmotor0.setTargetPosition((int)(Right0/inPerPulse));
             rmotor1.setTargetPosition((int)(Right1/inPerPulse));
-            runMotors(power,power,power,power);
+            runMotorsAuto(power,power,power,power);
             counter++;
         }
         return (!lmotor0.isBusy() && !lmotor1.isBusy() && !rmotor0.isBusy() && !rmotor1.isBusy()); //returns true when motors are not busy
     }
 
     public boolean turn (double angle, double speed) {
-        double threshold = 2;
+        double threshold = 1;
         turnRate=(speed*angleDistance(angle, gyroSensor.getHeading())/90); //preferably, 90 is changed to the initial distance from the angle. I couldn't find a good way for that to work
         runMotors(turnRate, turnRate, -turnRate, -turnRate);
-        if (-threshold<angle && angle<threshold)
+        if (-threshold< angleDistance(angle, gyroSensor.getHeading())&& angleDistance(angle, gyroSensor.getHeading())<threshold)
         {
             return true;
         }

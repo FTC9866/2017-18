@@ -92,31 +92,33 @@ public class BlueAutonomous1 extends VirusMethods {
                     }
                 break;
             case alignStraight:
-                if (turn(0,0.5)) {
+                if (turn(0,0.75)) {
+                    resetEncoder();
                     counter = 0;
-                    state = state.stop;
+                    state = state.toCryptoBox ;
                 }
                 break;
-            case backOnStone:
+            case backOnStone: // broken plz fix
                 if (setMotorPositions(0,0,0,0, .5)){
                     resetEncoder();
                     state=state.toCryptoBox;
                 }
                 break;
             case toCryptoBox:
-                if (vuMark == RelicRecoveryVuMark.LEFT){
+                if (VuMarkStored == RelicRecoveryVuMark.LEFT){
                     if (setMotorPositionsINCH(-28,-28,-28,-28, -.5)){
                         resetEncoder();
-                        state=state.toCryptoBox;
+                        telemetry.addData("reee", "e");
+                        state=state.faceCryptoBox;
                     }
                 }
-                if (vuMark == RelicRecoveryVuMark.CENTER){
+                if (VuMarkStored == RelicRecoveryVuMark.CENTER){
                     if (setMotorPositionsINCH(-36,-36,-36,-36, -.5)){
                         resetEncoder();
-                        state=state.toCryptoBox;
+                        state=state.faceCryptoBox;
                     }
                 }
-                if (vuMark == RelicRecoveryVuMark.RIGHT){
+                if (VuMarkStored == RelicRecoveryVuMark.RIGHT){
                     if (setMotorPositionsINCH(-44,-44,-44,-44, .5)){
                         resetEncoder();
                         state=state.faceCryptoBox;
@@ -128,7 +130,7 @@ public class BlueAutonomous1 extends VirusMethods {
                 }
                 break;
             case faceCryptoBox:
-                if (turn(90,1)){
+                if (turn(270,.75)) {
                     resetEncoder();
                     state=state.stop;
                 }
@@ -146,6 +148,7 @@ public class BlueAutonomous1 extends VirusMethods {
                 runMotors(0,0,0,0);
                 break;
         }
-       // Telemetry();,k
+        telemetry.addData("state", state);
+        // Telemetry();,k
     }
 }
