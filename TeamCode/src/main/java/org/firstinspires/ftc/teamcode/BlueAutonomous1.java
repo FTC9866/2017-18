@@ -20,7 +20,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 @TeleOp(name="BlueAutonomous1", group="TeleOp")
 
 public class BlueAutonomous1 extends VirusMethods {
-    enum state  {dropArm,scanJewel,knockJewelRight, knockJewelLeft, stop, goToPosition, debug, alignStraight, toCryptoBox, moveUnitlScanned}
+    enum state  {dropArm,scanJewel,knockJewelRight, knockJewelLeft, stop, goToPosition, debug, alignStraight, toCryptoBox, backOnStone, faceCryptoBox, moveUnitlScanned}
     state state;
     boolean setMotor;
 
@@ -71,20 +71,20 @@ public class BlueAutonomous1 extends VirusMethods {
                 break;
 
             case knockJewelRight:
-                if (setMotorPositionsINCH(3,3,3,3,1)){
+                if (setMotorPositionsINCH(3,3,3,3,.5)){
                     jewelKnocker.setPosition(0);
                     state=state.moveUnitlScanned;
                 }
                 break;
 
             case knockJewelLeft:
-                if (setMotorPositionsINCH(-3,-3,-3,-3,-1)){
+                if (setMotorPositionsINCH(-3,-3,-3,-3,-.5)){
                     jewelKnocker.setPosition(0);
                     state=state.moveUnitlScanned;
                 }
                 break;
             case moveUnitlScanned:
-                runMotors(.1,.1,.1,.1);
+                runMotors(.1,.1,.1,.1); //program to make it move backwards if it doesn't see it after traveling a certain distance
                     if(vuMark != RelicRecoveryVuMark.UNKNOWN){
                         telemetry.addData("VuMark", "%s visible", vuMark);
                         VuMarkStored = vuMark;
@@ -93,22 +93,44 @@ public class BlueAutonomous1 extends VirusMethods {
                 break;
             case alignStraight:
                 if (turn(0,0.5)) {
+                    counter = 0;
                     state = state.stop;
+                }
+                break;
+            case backOnStone:
+                if (setMotorPositions(0,0,0,0, .5)){
+                    resetEncoder();
+                    state=state.toCryptoBox;
                 }
                 break;
             case toCryptoBox:
                 if (vuMark == RelicRecoveryVuMark.LEFT){
-
+                    if (setMotorPositionsINCH(-28,-28,-28,-28, -.5)){
+                        resetEncoder();
+                        state=state.toCryptoBox;
+                    }
                 }
                 if (vuMark == RelicRecoveryVuMark.CENTER){
-
+                    if (setMotorPositionsINCH(-36,-36,-36,-36, -.5)){
+                        resetEncoder();
+                        state=state.toCryptoBox;
+                    }
                 }
                 if (vuMark == RelicRecoveryVuMark.RIGHT){
-
+                    if (setMotorPositionsINCH(-44,-44,-44,-44, .5)){
+                        resetEncoder();
+                        state=state.faceCryptoBox;
+                    }
                 }
                 else {
                     //nani
                     //program to park back onto balance stone (li)?
+                }
+                break;
+            case faceCryptoBox:
+                if (turn(90,1)){
+                    resetEncoder();
+                    state=state.stop;
                 }
                 break;
             case debug:
