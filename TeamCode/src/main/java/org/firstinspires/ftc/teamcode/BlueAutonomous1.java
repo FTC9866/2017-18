@@ -20,7 +20,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 @TeleOp(name="BlueAutonomous1", group="TeleOp")
 
 public class BlueAutonomous1 extends VirusMethods {
-    enum state  {dropArm,scanJewel,knockJewelRight, knockJewelLeft, stop, goToPosition, debug, alignStraight, moveUnitlScanned}
+    enum state  {dropArm,scanJewel,knockJewelRight, knockJewelLeft, stop, goToPosition, debug, alignStraight, toCryptoBox, moveUnitlScanned}
     state state;
     boolean setMotor;
 
@@ -96,6 +96,21 @@ public class BlueAutonomous1 extends VirusMethods {
                     state = state.stop;
                 }
                 break;
+            case toCryptoBox:
+                if (vuMark == RelicRecoveryVuMark.LEFT){
+
+                }
+                if (vuMark == RelicRecoveryVuMark.CENTER){
+
+                }
+                if (vuMark == RelicRecoveryVuMark.RIGHT){
+
+                }
+                else {
+                    //nani
+                    //program to park back onto balance stone (li)?
+                }
+                break;
             case debug:
                 //telemetry.addData("done","done");
                 telemetry.addData("setMotor returns", setMotor);
@@ -108,8 +123,6 @@ public class BlueAutonomous1 extends VirusMethods {
                 telemetry.addData("state", state);
                 runMotors(0,0,0,0);
                 break;
-
-
         }
        // Telemetry();,k
     }
