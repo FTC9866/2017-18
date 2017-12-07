@@ -96,6 +96,13 @@ public abstract class VirusMethods extends VirusHardware{
     public boolean turn (double angle, double speed) {
         double threshold = 1;
         turnRate=(speed*angleDistance(angle, gyroSensor.getHeading())/90); //preferably, 90 is changed to the initial distance from the angle. I couldn't find a good way for that to work
+        if (turnRate>0){
+            turnRate+=.05; //you guys might want to experiment with this value
+        }
+        if (turnRate<0){
+            turnRate-=.05; //you guys might want to experiment with this value
+        }
+        
         runMotors(turnRate, turnRate, -turnRate, -turnRate);
         if (-threshold< angleDistance(angle, gyroSensor.getHeading())&& angleDistance(angle, gyroSensor.getHeading())<threshold)
         {
