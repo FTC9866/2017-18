@@ -20,7 +20,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 @TeleOp(name="BlueAutonomous1", group="TeleOp")
 
 public class BlueAutonomous1 extends VirusMethods {
-    enum state  {dropArm,scanJewel,knockJewelRight, knockJewelLeft, stop, goToPosition, debug, alignStraight, toCryptoBox, backOnStone, faceCryptoBox, moveUnitlScanned}
+    enum state  {dropArm,scanJewel,knockJewelRight, knockJewelLeft, stop, goToPosition, debug, alignStraight, toCryptoBox, backOnStone, faceCryptoBox, placeGlyph, moveUnitlScanned}
     state state;
     boolean setMotor;
 
@@ -29,6 +29,8 @@ public class BlueAutonomous1 extends VirusMethods {
         lmotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rmotor0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rmotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        cube1.setPosition(.5);
+        cube2.setPosition(.5);
         state=state.dropArm;
         vuforiaInit();
     }
@@ -92,7 +94,7 @@ public class BlueAutonomous1 extends VirusMethods {
                     }
                 break;
             case alignStraight:
-                if (turn(0,0.75)) {
+                if (turn(0,1)) {
                     resetEncoder();
                     counter = 0;
                     state = state.toCryptoBox ;
@@ -105,8 +107,10 @@ public class BlueAutonomous1 extends VirusMethods {
                 }
                 break;
             case toCryptoBox:
+                liftLeft.setPosition(0.01); //so that cube doesn't drag on ground
+                liftRight.setPosition(0.01);
                 if (VuMarkStored == RelicRecoveryVuMark.LEFT){
-                    if (setMotorPositionsINCH(-28,-28,-28,-28, -.5)){
+                    if (setMotorPositionsINCH(-30,-30,-30,-30, -.5)){
                         resetEncoder();
                         telemetry.addData("reee", "e");
                         state=state.faceCryptoBox;
@@ -132,8 +136,16 @@ public class BlueAutonomous1 extends VirusMethods {
             case faceCryptoBox:
                 if (turn(270,.75)) {
                     resetEncoder();
-                    state=state.stop;
+                    state=state.placeGlyph;
                 }
+                break;
+            case placeGlyph:
+                runMotors(1,1,1,1);
+                waitTime(500);
+                runMotors(0,0,0,0);
+                cube1.setPosition(0);
+                cube2.setPosition(1);
+                state = state.stop;
                 break;
             case debug:
                 //telemetry.addData("done","done");

@@ -42,13 +42,13 @@ public class Drive extends VirusMethods {
             liftLeft.setPosition(.3/3 + .02);
             liftRight.setPosition(.3 * 18.8/20/3 + .02); // sync motors
         }
-        if (gamepad2.x){
+        if (gamepad2.y){
             liftLeft.setPosition(.6/3 + .02);
             liftRight.setPosition(.6 * 18.8/20/3 + .02); // sync motors
         }
-        if (gamepad2.y){
-            liftLeft.setPosition(.3 + .2);
-            liftRight.setPosition(.3 * 18.8/20 + .2); // sync motors
+        if (gamepad2.x){
+            liftLeft.setPosition(.3 + .02);
+            liftRight.setPosition(.3 * 18.8/20 + .02); // sync motors
         }
 
         Telemetry();
