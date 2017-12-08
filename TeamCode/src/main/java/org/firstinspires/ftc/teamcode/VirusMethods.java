@@ -112,11 +112,44 @@ public abstract class VirusMethods extends VirusHardware{
     }
 
     private double angleDistance(double angle, double currentAngle) {
-        double distance=angle-currentAngle;
-        if (angle <-180){
+        double distance= angle - currentAngle;
+        if (angle < -180){
             distance+=180;
         }
         return distance;
+    }
+
+    public boolean turnMotors(double angle, boolean right, double speed) {
+        turnRate=(speed*absoluteDistance(angle,gyroSensor.getHeading())/90);
+        if (right) {
+            runMotors(-turnRate, -turnRate, turnRate, turnRate);
+        } else {
+            runMotors(turnRate, turnRate, -turnRate, -turnRate);
+        }
+        telemetry.addData("distance left:", absoluteDistance(angle, gyroSensor.getHeading()));
+
+        if ((360-absoluteDistance(angle, gyroSensor.getHeading())) < 15) {
+
+            return true;
+        }
+        return false;
+    }
+
+    private double absoluteDistance(double angle1, double angle2) {
+
+        double angleDistance = Math.abs(angle1 - angle2);
+
+        if (angleDistance > 180) {
+            angleDistance = 360 - angleDistance;
+        }
+        return angleDistance;
+    }
+    public boolean turnMotorsPlus(double angle, double speed){
+        double currentAngle = gyroSensor.getHeading();
+        return true;
+    }
+    private double relativeAngle(double angle, double currentAngle){
+        return 6.0;
     }
 
     public void resetEncoder(){

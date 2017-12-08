@@ -20,7 +20,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 @TeleOp(name="BlueAutonomous1", group="TeleOp")
 
 public class BlueAutonomous1 extends VirusMethods {
-    enum state  {dropArm,scanJewel,knockJewelRight, knockJewelLeft, stop, goToPosition, debug, alignStraight, toCryptoBox, backOnStone, faceCryptoBox, placeGlyph, moveUnitlScanned}
+    enum state  {dropArm,scanJewel,knockJewelRight, knockJewelLeft, stop, goToPosition, debug, alignStraight, toCryptoBox, backOnStone, faceCryptoBox, placeGlyph, turnBackLeft, turnBackRight, moveUnitlScanned}
     state state;
     boolean setMotor;
 
@@ -29,12 +29,11 @@ public class BlueAutonomous1 extends VirusMethods {
         lmotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rmotor0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rmotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        cube1.setPosition(.5);
-        cube2.setPosition(.5);
         state=state.dropArm;
         vuforiaInit();
     }
     @Override
+
     public void loop() {
         vuMark = RelicRecoveryVuMark.from(relicTemplate);
         pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
@@ -65,26 +64,37 @@ public class BlueAutonomous1 extends VirusMethods {
             case scanJewel:
                 if (colorSensor.red() < colorSensor.blue()) { //checks to see if object is more red or more blue
                     colorSensor.enableLed(false);
-                    state=state.knockJewelRight;
-                }
-                else if (colorSensor.blue() < colorSensor.red()) {
                     state=state.knockJewelLeft;
                 }
-                break;
-
-            case knockJewelRight:
-                if (setMotorPositionsINCH(3,3,3,3,.5)){
-                    jewelKnocker.setPosition(0);
-                    state=state.moveUnitlScanned;
+                else if (colorSensor.blue() < colorSensor.red()) {
+                    state=state.knockJewelRight;
                 }
                 break;
 
             case knockJewelLeft:
-                if (setMotorPositionsINCH(-3,-3,-3,-3,-.5)){
+                if (turnMotors(345, false, 0.3)){
                     jewelKnocker.setPosition(0);
-                    state=state.moveUnitlScanned;
+                    state=state.turnBackRight;
                 }
                 break;
+
+            case knockJewelRight:
+                if (turnMotors(15, true, 0.3)) {
+                    jewelKnocker.setPosition(0);
+                    state = state.turnBackLeft;
+                }
+                break;
+
+            case turnBackLeft:
+                turnMotors(0, false, 0.3);
+                state = state.moveUnitlScanned;
+                break;
+
+            case turnBackRight:
+                turnMotors(0, true, 0.3);
+                state = state.moveUnitlScanned;
+                break;
+
             case moveUnitlScanned:
                 runMotors(.1,.1,.1,.1); //program to make it move backwards if it doesn't see it after traveling a certain distance
                     if(vuMark != RelicRecoveryVuMark.UNKNOWN){
@@ -107,8 +117,7 @@ public class BlueAutonomous1 extends VirusMethods {
                 }
                 break;
             case toCryptoBox:
-                liftLeft.setPosition(0.01); //so that cube doesn't drag on ground
-                liftRight.setPosition(0.01);
+                lift(0.06); //so that cube doesn't drag on ground
                 if (VuMarkStored == RelicRecoveryVuMark.LEFT){
                     if (setMotorPositionsINCH(-30,-30,-30,-30, -.5)){
                         resetEncoder();
@@ -140,11 +149,14 @@ public class BlueAutonomous1 extends VirusMethods {
                 }
                 break;
             case placeGlyph:
-                runMotors(1,1,1,1);
+                runMotors(0.5,0.5,0.5,0.5);
                 waitTime(500);
                 runMotors(0,0,0,0);
                 cube1.setPosition(0);
                 cube2.setPosition(1);
+                runMotors(-0.5,-0.5,-0.5,-0.5);
+                waitTime(500);
+                runMotors(0,0,0,0);
                 state = state.stop;
                 break;
             case debug:

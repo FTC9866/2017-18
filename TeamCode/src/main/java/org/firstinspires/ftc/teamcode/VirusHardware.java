@@ -72,7 +72,15 @@ public abstract class VirusHardware extends OpMode {
         liftLeft.setPosition(0);
         liftRight.setPosition(0);
         jewelKnocker.setPosition(0);
+        cube1.setPosition(.5);
+        cube2.setPosition(.5);
 
+
+    }
+
+    public void lift(double position) {
+        liftLeft.setPosition(position);
+        liftRight.setPosition(position);
     }
 
 }
