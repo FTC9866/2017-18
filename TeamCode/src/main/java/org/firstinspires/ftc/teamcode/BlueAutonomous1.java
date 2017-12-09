@@ -25,6 +25,15 @@ public class BlueAutonomous1 extends VirusMethods {
     boolean setMotor;
     boolean knock;
 
+    public void init() {
+        super.init();
+        liftLeft.setPosition(0);
+        liftRight.setPosition(0);
+        jewelKnocker.setPosition(0);
+        cube1.setPosition(.5);
+        cube2.setPosition(.5);
+    }
+
     public void start() {
         lmotor0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         lmotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
