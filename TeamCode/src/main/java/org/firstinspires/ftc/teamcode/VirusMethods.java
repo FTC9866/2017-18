@@ -128,7 +128,7 @@ public abstract class VirusMethods extends VirusHardware{
         }
         telemetry.addData("distance left:", absoluteDistance(angle, gyroSensor.getHeading()));
 
-        if ((360-absoluteDistance(angle, gyroSensor.getHeading())) < 15) {
+        if (absoluteDistance(angle, gyroSensor.getHeading()) < 15) {
 
             return true;
         }
@@ -145,12 +145,26 @@ public abstract class VirusMethods extends VirusHardware{
         return angleDistance;
     }
     public boolean turnMotorsPlus(double angle, double speed){
+        double threshold = 3;
         double currentAngle = gyroSensor.getHeading();
-        return true;
+        double angleRel = relativeAngle(angle, currentAngle); //should be distance from current angle (negative if to the counterclockwise, positive if to the clockwise)
+        turnRate = speed*angleRel/90;
+        runMotors(turnRate, turnRate, -turnRate, -turnRate); //negative turnRate will result in a left turn
+        if (angleRel<=threshold || angleRel>=-threshold) { //approaching from either side
+            return true;
+        }
+        return false;
     }
     private double relativeAngle(double angle, double currentAngle){
-        return 6.0;
+        double currentAngleRel = angle-currentAngle;
+        if (currentAngleRel > 180){
+            currentAngleRel -= 360;
+        }else if (currentAngle < -179){
+            currentAngleRel += 360;
+        }
+        return currentAngleRel;
     }
+
 
     public void resetEncoder(){
         runMotors(0,0,0,0);

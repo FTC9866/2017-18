@@ -23,6 +23,7 @@ public class BlueAutonomous1 extends VirusMethods {
     enum state  {dropArm,scanJewel,knockJewelRight, knockJewelLeft, stop, goToPosition, debug, alignStraight, toCryptoBox, backOnStone, faceCryptoBox, placeGlyph, turnBackLeft, turnBackRight, moveUnitlScanned}
     state state;
     boolean setMotor;
+    boolean knock;
 
     public void start() {
         lmotor0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -63,35 +64,37 @@ public class BlueAutonomous1 extends VirusMethods {
 
             case scanJewel:
                 if (colorSensor.red() < colorSensor.blue()) { //checks to see if object is more red or more blue
+                    knock  = true;
                     colorSensor.enableLed(false);
                     state=state.knockJewelLeft;
                 }
                 else if (colorSensor.blue() < colorSensor.red()) {
+                    knock = false;
                     state=state.knockJewelRight;
                 }
                 break;
 
             case knockJewelLeft:
-                if (turnMotors(345, false, 0.3)){
+                if (turnMotors(345, true, 0.3)){
                     jewelKnocker.setPosition(0);
                     state=state.turnBackRight;
                 }
                 break;
 
             case knockJewelRight:
-                if (turnMotors(15, true, 0.3)) {
+                if (turnMotors(15, false, 0.3)) {
                     jewelKnocker.setPosition(0);
                     state = state.turnBackLeft;
                 }
                 break;
 
             case turnBackLeft:
-                turnMotors(0, false, 0.3);
+                turnMotors(0, true, 0.3);
                 state = state.moveUnitlScanned;
                 break;
 
             case turnBackRight:
-                turnMotors(0, true, 0.3);
+                turnMotors(0, false, 0.3);
                 state = state.moveUnitlScanned;
                 break;
 
@@ -172,6 +175,7 @@ public class BlueAutonomous1 extends VirusMethods {
                 runMotors(0,0,0,0);
                 break;
         }
+        telemetry.addData("Blue: true Red: false ", knock);
         telemetry.addData("state", state);
         // Telemetry();,k
     }
