@@ -3,24 +3,19 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 
 @TeleOp(name="BlueAutonomous1", group="TeleOp")
 
 public class BlueAutonomous1 extends VirusMethods {
-    enum state  {dropArm,scanJewel,knockJewelRight, knockJewelLeft, stop, goToPosition, debug, alignStraight, toCryptoBox, backOnStone, faceCryptoBox, placeGlyph, turnBackLeft, turnBackRight, moveUnitlScanned}
+    enum state  {dropArm,scanJewel,knockJewelRight, knockJewelLeft, stop, goToPosition, debug, alignStraight, toCryptoBox, backOnStone, faceCryptoBox, placeGlyph, turnBackLeft, turnBackRight, turnBack, toCryptoBoxpart1, turn90, toCryptoBoxpart2, moveUntilScanned}
     state state;
     boolean setMotor;
     boolean knock;
@@ -84,39 +79,46 @@ public class BlueAutonomous1 extends VirusMethods {
                 break;
 
             case knockJewelLeft:
-                if (turnMotors(345, true, 0.3)){
+                if (turnMotorsPlus(345, 0.3)){
                     jewelKnocker.setPosition(0);
-                    state=state.turnBackRight;
+                    state=state.turnBack;
                 }
                 break;
 
             case knockJewelRight:
-                if (turnMotors(15, false, 0.3)) {
+                if (turnMotorsPlus(15,0.3)) {
                     jewelKnocker.setPosition(0);
-                    state = state.turnBackLeft;
+                    state = state.turnBack;
                 }
                 break;
-
+            case turnBack:
+                if (turnMotorsPlus(0, 0.3)){
+                    position = lmotor0.getCurrentPosition();
+                    state = state.moveUntilScanned;
+                }
+                break;
+            //turnBackLeft and turnBackRight kept just in case turnMotorsPlus method doesn't work
             case turnBackLeft:
                 turnMotors(0, true, 0.3);
-                state = state.moveUnitlScanned;
+                state = state.moveUntilScanned;
                 break;
 
             case turnBackRight:
                 turnMotors(0, false, 0.3);
-                state = state.moveUnitlScanned;
+                state = state.moveUntilScanned;
                 break;
 
-            case moveUnitlScanned:
+            case moveUntilScanned:
                 runMotors(.1,.1,.1,.1); //program to make it move backwards if it doesn't see it after traveling a certain distance
                     if(vuMark != RelicRecoveryVuMark.UNKNOWN){
                         telemetry.addData("VuMark", "%s visible", vuMark);
                         VuMarkStored = vuMark;
+                        amountMovedForward = (lmotor0.getCurrentPosition()-position)*inPerPulse; //how many inches it moved back to scan the vision target
                         state = state.alignStraight;
                     }
                 break;
             case alignStraight:
-                if (turn(0,1)) {
+                if (turnMotorsPlus(0,1)) {
                     resetEncoder();
                     counter = 0;
                     state = state.toCryptoBox ;
@@ -131,20 +133,20 @@ public class BlueAutonomous1 extends VirusMethods {
             case toCryptoBox:
                 lift(0.06); //so that cube doesn't drag on ground
                 if (VuMarkStored == RelicRecoveryVuMark.LEFT){
-                    if (setMotorPositionsINCH(-30,-30,-30,-30, -.5)){
+                    if (setMotorPositionsINCH(-30-amountMovedForward,-30-amountMovedForward,-30-amountMovedForward,-30-amountMovedForward, -.5)){
                         resetEncoder();
                         telemetry.addData("reee", "e");
                         state=state.faceCryptoBox;
                     }
                 }
                 if (VuMarkStored == RelicRecoveryVuMark.CENTER){
-                    if (setMotorPositionsINCH(-36,-36,-36,-36, -.5)){
+                    if (setMotorPositionsINCH(-36-amountMovedForward,-36-amountMovedForward,-36-amountMovedForward,-36-amountMovedForward, -.5)){
                         resetEncoder();
                         state=state.faceCryptoBox;
                     }
                 }
                 if (VuMarkStored == RelicRecoveryVuMark.RIGHT){
-                    if (setMotorPositionsINCH(-44,-44,-44,-44, .5)){
+                    if (setMotorPositionsINCH(-44-amountMovedForward,-44-amountMovedForward,-44-amountMovedForward,-44-amountMovedForward, .5)){
                         resetEncoder();
                         state=state.faceCryptoBox;
                     }
@@ -155,7 +157,7 @@ public class BlueAutonomous1 extends VirusMethods {
                 }
                 break;
             case faceCryptoBox:
-                if (turn(270,.75)) {
+                if (turnMotorsPlus(270,.75)) {
                     resetEncoder();
                     state=state.placeGlyph;
                 }

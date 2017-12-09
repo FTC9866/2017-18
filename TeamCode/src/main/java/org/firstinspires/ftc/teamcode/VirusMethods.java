@@ -18,7 +18,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 public abstract class VirusMethods extends VirusHardware{
     int counter=0;
+    double position;
+    double amountMovedForward;
     double turnRate;
+    double angleRel;
     double maxDisplacement;
     public void runMotors(double Left0, double Left1, double Right0, double Right1, double steerMagnitude){
         if (Left0!=0&&Left1!=0&&Right0!=0&&Right1!=0) {
@@ -147,10 +150,10 @@ public abstract class VirusMethods extends VirusHardware{
     public boolean turnMotorsPlus(double angle, double speed){
         double threshold = 3;
         double currentAngle = gyroSensor.getHeading();
-        double angleRel = relativeAngle(angle, currentAngle); //should be distance from current angle (negative if to the counterclockwise, positive if to the clockwise)
+        angleRel = relativeAngle(angle, currentAngle); //should be distance from current angle (negative if to the counterclockwise, positive if to the clockwise)
         turnRate = speed*angleRel/90;
         runMotors(turnRate, turnRate, -turnRate, -turnRate); //negative turnRate will result in a left turn
-        if (angleRel<=threshold || angleRel>=-threshold) { //approaching from either side
+        if (angleRel<=threshold && angleRel>=-threshold) { //approaching from either side
             return true;
         }
         return false;

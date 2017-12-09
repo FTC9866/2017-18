@@ -12,9 +12,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 
 
-@TeleOp(name="RedAutonomous1", group="TeleOp")
+@TeleOp(name="RedAutonomous2", group="TeleOp")
 
-public class RedAutonomous1 extends VirusMethods {
+public class RedAutonomous2 extends VirusMethods {
     enum state  {dropArm,scanJewel,knockJewelRight, knockJewelLeft, stop, goToPosition, debug, alignStraight, toCryptoBox, backOnStone, faceCryptoBox, placeGlyph, turnBackLeft, turnBackRight, moveUnitlScanned}
     BlueAutonomous1.state state;
     boolean setMotor;
@@ -122,7 +122,7 @@ public class RedAutonomous1 extends VirusMethods {
                 if (turn(0,1)) {
                     resetEncoder();
                     counter = 0;
-                    state = state.toCryptoBox ;
+                    state = state.toCryptoBoxpart1;
                 }
                 break;
             case backOnStone: // broken plz fix
@@ -131,33 +131,42 @@ public class RedAutonomous1 extends VirusMethods {
                     state=state.toCryptoBox;
                 }
                 break;
-            case toCryptoBox:
+            case toCryptoBoxpart1:
+                if (setMotorPositionsINCH(30-amountMovedForward,30-amountMovedForward,30-amountMovedForward,30-amountMovedForward,0.5)) {
+                    resetEncoder();
+                    state=state.turn90;
+                }
+                break;
+            case turn90:
+                if (turnMotorsPlus(270,0.5)) {
+                    resetEncoder();
+                    state = state.toCryptoBoxpart2;
+                }
+                break;
+            case toCryptoBoxpart2:
                 lift(0.06); //so that cube doesn't drag on ground
                 if (VuMarkStored == RelicRecoveryVuMark.LEFT){
-                    if (setMotorPositionsINCH(30+amountMovedForward,30-amountMovedForward,30-amountMovedForward,30-amountMovedForward, .5)){ //amountMovedForward subtracted to remove the amount of space moved forward to scan vision target
+                    if (setMotorPositionsINCH(4,4,4,4, .5)){ //amountMovedForward subtracted to remove the amount of space moved forward to scan vision target
                         resetEncoder();
                         telemetry.addData("reee", "e");
                         state=state.faceCryptoBox;
                     }
                 }else if (VuMarkStored == RelicRecoveryVuMark.CENTER){
-                    if (setMotorPositionsINCH(36-amountMovedForward,36-amountMovedForward,36-amountMovedForward,36-amountMovedForward, .5)){
+                    if (setMotorPositionsINCH(12,12,12,12, .5)){
                         resetEncoder();
                         state=state.faceCryptoBox;
                     }
                 }else if (VuMarkStored == RelicRecoveryVuMark.RIGHT){
-                    if (setMotorPositionsINCH(44-amountMovedForward,44-amountMovedForward,44-amountMovedForward,44-amountMovedForward, .5)){
+                    if (setMotorPositionsINCH(20,20,20,20, .5)){
                         resetEncoder();
                         state=state.faceCryptoBox;
                     }
                 }else { //just in case of some weird circumstance that it forgets the VuMark
-                    if (setMotorPositionsINCH(-amountMovedForward,-amountMovedForward,-amountMovedForward,-amountMovedForward,.5)){ //moves back to park on balance stone
-                        resetEncoder();
-                        state = state.stop;
-                    }
+                    state = state.stop;
                 }
                 break;
             case faceCryptoBox:
-                if (turnMotorsPlus(90,.75)) {
+                if (turnMotorsPlus(0,.75)) {
                     resetEncoder();
                     state=state.placeGlyph;
                 }

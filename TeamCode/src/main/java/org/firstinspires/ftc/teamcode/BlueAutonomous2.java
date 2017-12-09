@@ -12,11 +12,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 
 
-@TeleOp(name="RedAutonomous1", group="TeleOp")
+@TeleOp(name="BlueAutonomous2", group="TeleOp")
 
-public class RedAutonomous1 extends VirusMethods {
-    enum state  {dropArm,scanJewel,knockJewelRight, knockJewelLeft, stop, goToPosition, debug, alignStraight, toCryptoBox, backOnStone, faceCryptoBox, placeGlyph, turnBackLeft, turnBackRight, moveUnitlScanned}
-    BlueAutonomous1.state state;
+public class BlueAutonomous2 extends VirusMethods {
+    enum state  {dropArm,scanJewel,knockJewelRight, knockJewelLeft, stop, goToPosition, debug, alignStraight, toCryptoBox, backOnStone, faceCryptoBox, placeGlyph, turnBackLeft, turnBackRight, turnBack, toCryptoBoxpart1, toCryptoBoxpart2, turn90, moveUntilScanned}
+    state state;
     boolean setMotor;
     boolean knock;
 
@@ -67,15 +67,14 @@ public class RedAutonomous1 extends VirusMethods {
                 break;
 
             case scanJewel:
-                //checks to see if object is more red or more blue
-                if (colorSensor.red() < colorSensor.blue()) { //if right side jewel is blue
+                if (colorSensor.red() < colorSensor.blue()) { //checks to see if object is more red or more blue
                     knock  = true;
                     colorSensor.enableLed(false);
-                    state=state.knockJewelRight;
-                }
-                else if (colorSensor.blue() < colorSensor.red()) { //if right side jewel is red
-                    knock = false;
                     state=state.knockJewelLeft;
+                }
+                else if (colorSensor.blue() < colorSensor.red()) {
+                    knock = false;
+                    state=state.knockJewelRight;
                 }
                 break;
 
@@ -98,7 +97,7 @@ public class RedAutonomous1 extends VirusMethods {
                     state = state.moveUntilScanned;
                 }
                 break;
-            //turnBackLeft and turnBackRight might be needed if turnMotorsPlus method doesn't work
+            //turnBackLeft and turnBackRight kept just in case turnMotorsPlus method doesn't work
             case turnBackLeft:
                 turnMotors(0, true, 0.3);
                 state = state.moveUntilScanned;
@@ -111,18 +110,18 @@ public class RedAutonomous1 extends VirusMethods {
 
             case moveUntilScanned:
                 runMotors(.1,.1,.1,.1); //program to make it move backwards if it doesn't see it after traveling a certain distance
-                if(vuMark != RelicRecoveryVuMark.UNKNOWN){
-                    telemetry.addData("VuMark", "%s visible", vuMark);
-                    VuMarkStored = vuMark;
-                    amountMovedForward = (lmotor0.getCurrentPosition()-position)*inPerPulse; //how many inches it moved forward to scan the vision target
-                    state = state.alignStraight;
-                }
+                    if(vuMark != RelicRecoveryVuMark.UNKNOWN){
+                        telemetry.addData("VuMark", "%s visible", vuMark);
+                        VuMarkStored = vuMark;
+                        amountMovedForward = (lmotor0.getCurrentPosition()-position)*inPerPulse; //how many inches it moved back to scan the vision target
+                        state = state.alignStraight;
+                    }
                 break;
             case alignStraight:
-                if (turn(0,1)) {
+                if (turnMotorsPlus(0,1)) {
                     resetEncoder();
                     counter = 0;
-                    state = state.toCryptoBox ;
+                    state = state.toCryptoBoxpart1;
                 }
                 break;
             case backOnStone: // broken plz fix
@@ -131,33 +130,46 @@ public class RedAutonomous1 extends VirusMethods {
                     state=state.toCryptoBox;
                 }
                 break;
-            case toCryptoBox:
+            case toCryptoBoxpart1:
+                if (setMotorPositionsINCH(-30-amountMovedForward,-30-amountMovedForward,-30-amountMovedForward,-30-amountMovedForward,-.5)){
+                    resetEncoder();
+                    state = state.turn90;
+                }
+                break;
+            case turn90:
+                if (turnMotorsPlus(90,0.5)){
+                    resetEncoder();
+                    state = state.toCryptoBoxpart2;
+                }
+                break;
+            case toCryptoBoxpart2:
                 lift(0.06); //so that cube doesn't drag on ground
+                //change the motor position values as needed after testing on field
                 if (VuMarkStored == RelicRecoveryVuMark.LEFT){
-                    if (setMotorPositionsINCH(30+amountMovedForward,30-amountMovedForward,30-amountMovedForward,30-amountMovedForward, .5)){ //amountMovedForward subtracted to remove the amount of space moved forward to scan vision target
+                    if (setMotorPositionsINCH(-4,-4,-4,-4, -.5)){
                         resetEncoder();
                         telemetry.addData("reee", "e");
                         state=state.faceCryptoBox;
                     }
-                }else if (VuMarkStored == RelicRecoveryVuMark.CENTER){
-                    if (setMotorPositionsINCH(36-amountMovedForward,36-amountMovedForward,36-amountMovedForward,36-amountMovedForward, .5)){
+                }
+                if (VuMarkStored == RelicRecoveryVuMark.CENTER){
+                    if (setMotorPositionsINCH(-12,-12,-12,-12, -.5)){
                         resetEncoder();
                         state=state.faceCryptoBox;
                     }
-                }else if (VuMarkStored == RelicRecoveryVuMark.RIGHT){
-                    if (setMotorPositionsINCH(44-amountMovedForward,44-amountMovedForward,44-amountMovedForward,44-amountMovedForward, .5)){
+                }
+                if (VuMarkStored == RelicRecoveryVuMark.RIGHT){
+                    if (setMotorPositionsINCH(-20,-20,-20,-20, .5)){
                         resetEncoder();
                         state=state.faceCryptoBox;
                     }
-                }else { //just in case of some weird circumstance that it forgets the VuMark
-                    if (setMotorPositionsINCH(-amountMovedForward,-amountMovedForward,-amountMovedForward,-amountMovedForward,.5)){ //moves back to park on balance stone
-                        resetEncoder();
-                        state = state.stop;
-                    }
+                }
+                else {
+                    state = state.stop; //in the extreme case that the robot forgets
                 }
                 break;
             case faceCryptoBox:
-                if (turnMotorsPlus(90,.75)) {
+                if (turn(180,.75)) {
                     resetEncoder();
                     state=state.placeGlyph;
                 }

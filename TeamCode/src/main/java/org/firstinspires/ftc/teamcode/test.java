@@ -35,6 +35,7 @@ public class test extends VirusMethods{
               break;
 
         }
+        telemetry.addData("angle remaining", angleRel);;
 
     }
 
