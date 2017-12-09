@@ -26,6 +26,8 @@ public abstract class VirusHardware extends OpMode {
     ColorSensor colorSensor;
     Servo cube1;
     Servo cube2;
+    Servo cube3;
+    Servo cube4;
     Servo liftRight;
     Servo liftLeft;
     GyroSensor gyroSensor;
@@ -61,6 +63,8 @@ public abstract class VirusHardware extends OpMode {
         rmotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         cube1 = hardwareMap.servo.get("cube1");
         cube2 = hardwareMap.servo.get("cube2");
+        cube3 = hardwareMap.servo.get("cube3");
+        cube4 = hardwareMap.servo.get("cube4");
         liftRight = hardwareMap.servo.get("liftRight");
         liftLeft = hardwareMap.servo.get("liftLeft");
         jewelKnocker = hardwareMap.servo.get("jewelKnocker");

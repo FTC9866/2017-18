@@ -23,6 +23,7 @@ public abstract class VirusMethods extends VirusHardware{
     double turnRate;
     double angleRel;
     double maxDisplacement;
+    boolean triggered;
     public void runMotors(double Left0, double Left1, double Right0, double Right1, double steerMagnitude){
         if (Left0!=0&&Left1!=0&&Right0!=0&&Right1!=0) {
             steerMagnitude *= 2 * Math.max(Math.max(Left0, Left1), Math.max(Right0, Right1));
