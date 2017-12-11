@@ -59,6 +59,6 @@ public class Drive extends VirusMethods {
             liftRight.setPosition(.3 * 18.8/20 + .02); // sync motors
         }
 
-        Telemetry();
+       // Telemetry();
     }
 }
