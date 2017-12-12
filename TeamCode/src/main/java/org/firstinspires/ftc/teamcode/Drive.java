@@ -33,7 +33,7 @@ public class Drive extends VirusMethods {
         if (gamepad2.right_bumper) {
             cube1.setPosition(.5);
             cube2.setPosition(.5);
-        }
+ /*       }
         if (gamepad2.left_trigger>0.5){
             cube3.setPosition(0);
             cube4.setPosition(1);
@@ -41,7 +41,7 @@ public class Drive extends VirusMethods {
         if (gamepad2.right_trigger>0.5){
             cube3.setPosition(.5);
             cube4.setPosition(.5);
-        }
+        }*/
         if (gamepad2.a){
             liftLeft.setPosition(0);
             liftRight.setPosition(0);
