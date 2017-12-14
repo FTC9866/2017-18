@@ -26,10 +26,9 @@ public abstract class VirusHardware extends OpMode {
     ColorSensor colorSensor;
     Servo cube1;
     Servo cube2;
-    //Servo cube3;
-    //Servo cube4;
-    Servo liftRight;
-    Servo liftLeft;
+    Servo cube3;
+    Servo cube4;
+    Servo lift;
     GyroSensor gyroSensor;
     double maxPower=1;
     double lefty;
@@ -63,28 +62,22 @@ public abstract class VirusHardware extends OpMode {
         rmotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         cube1 = hardwareMap.servo.get("cube1");
         cube2 = hardwareMap.servo.get("cube2");
-        //cube3 = hardwareMap.servo.get("cube3");
-       // cube4 = hardwareMap.servo.get("cube4");
-        liftRight = hardwareMap.servo.get("liftRight");
-        liftLeft = hardwareMap.servo.get("liftLeft");
+        cube3 = hardwareMap.servo.get("cube3");
+        cube4 = hardwareMap.servo.get("cube4");
+        lift = hardwareMap.servo.get("lift");
         jewelKnocker = hardwareMap.servo.get("jewelKnocker");
         colorSensor = hardwareMap.colorSensor.get("colorSensor");
         gyroSensor = hardwareMap.gyroSensor.get("gryoSensor");
         while (gyroSensor.isCalibrating());
         cube1.setPosition(0);
         cube2.setPosition(1);
-        liftLeft.setPosition(0);
-        liftRight.setPosition(0);
+        cube3.setPosition(.15);
+        cube4.setPosition(.85);
+        lift.setPosition(0);
         jewelKnocker.setPosition(0);
-        cube1.setPosition(.5);
-        cube2.setPosition(.5);
-
 
     }
 
-    public void lift(double position) {
-        liftLeft.setPosition(position);
-        liftRight.setPosition(position);
-    }
+
 
 }

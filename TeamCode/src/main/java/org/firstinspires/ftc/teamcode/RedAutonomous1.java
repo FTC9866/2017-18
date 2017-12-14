@@ -22,8 +22,6 @@ public class RedAutonomous1 extends VirusMethods {
 
     public void init() {
         super.init();
-        liftLeft.setPosition(0);
-        liftRight.setPosition(0);
         jewelKnocker.setPosition(0);
         cube1.setPosition(.5);
         cube2.setPosition(.5);
@@ -80,20 +78,20 @@ public class RedAutonomous1 extends VirusMethods {
                 break;
 
             case knockJewelLeft:
-                if (turnMotorsPlus(345, 0.3)){
+                if (turnMotorsPlus(350, 0.5)){
                     jewelKnocker.setPosition(0);
                     state=state.turnBack;
                 }
                 break;
 
             case knockJewelRight:
-                if (turnMotorsPlus(15, 0.3)) {
+                if (turnMotorsPlus(10, 0.5)) {
                     jewelKnocker.setPosition(0);
                     state = state.turnBack;
                 }
                 break;
             case turnBack:
-                if (turnMotorsPlus(0, 0.3)){
+                if (turnMotorsPlus(0, 0.5)){
                     position = lmotor0.getCurrentPosition();
                     state = state.moveUntilScanned;
                 }
@@ -134,7 +132,7 @@ public class RedAutonomous1 extends VirusMethods {
             case toCryptoBox:
                 lift(0.06); //so that cube doesn't drag on ground
                 if (VuMarkStored == RelicRecoveryVuMark.LEFT){
-                    if (setMotorPositionsINCH(30+amountMovedForward,30-amountMovedForward,30-amountMovedForward,30-amountMovedForward, .5)){ //amountMovedForward subtracted to remove the amount of space moved forward to scan vision target
+                    if (setMotorPositionsINCH(44-amountMovedForward,44-amountMovedForward,44-amountMovedForward,44-amountMovedForward, .5)){ //amountMovedForward subtracted to remove the amount of space moved forward to scan vision target
                         resetEncoder();
                         telemetry.addData("reee", "e");
                         state=state.faceCryptoBox;
@@ -145,7 +143,7 @@ public class RedAutonomous1 extends VirusMethods {
                         state=state.faceCryptoBox;
                     }
                 }else if (VuMarkStored == RelicRecoveryVuMark.RIGHT){
-                    if (setMotorPositionsINCH(44-amountMovedForward,44-amountMovedForward,44-amountMovedForward,44-amountMovedForward, .5)){
+                    if (setMotorPositionsINCH(30-amountMovedForward,30-amountMovedForward,30-amountMovedForward,30-amountMovedForward, .5)){
                         resetEncoder();
                         state=state.faceCryptoBox;
                     }

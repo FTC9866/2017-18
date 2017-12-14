@@ -149,7 +149,8 @@ public abstract class VirusMethods extends VirusHardware{
         return angleDistance;
     }
     public boolean turnMotorsPlus(double angle, double speed){
-        double threshold = 3;
+        angle=360-angle;
+        double threshold = 1;
         double currentAngle = gyroSensor.getHeading();
         angleRel = relativeAngle(angle, currentAngle); //should be distance from current angle (negative if to the counterclockwise, positive if to the clockwise)
         turnRate = speed*angleRel/90;
@@ -215,6 +216,19 @@ public abstract class VirusMethods extends VirusHardware{
         relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
         relicTrackables.activate();
+    }
+    public void lift(double position) {
+        lift.setPosition(position);
+    }
+    public void topGrabber(){
+        if (cube3.getPosition()<0.3){
+            cube3.setPosition(.6);
+            cube4.setPosition(.4);
+        }
+        if (cube3.getPosition()>0.3){
+            cube3.setPosition(.15);
+            cube4.setPosition(.85);
+        }
     }
     String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";

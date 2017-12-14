@@ -22,8 +22,6 @@ public class RedAutonomous2 extends VirusMethods {
 
     public void init() {
         super.init();
-        liftLeft.setPosition(0);
-        liftRight.setPosition(0);
         jewelKnocker.setPosition(0);
         cube1.setPosition(.5);
         cube2.setPosition(.5);
@@ -80,20 +78,20 @@ public class RedAutonomous2 extends VirusMethods {
                 break;
 
             case knockJewelLeft:
-                if (turnMotorsPlus(345, 0.3)){
+                if (turnMotorsPlus(350, 0.5)){
                     jewelKnocker.setPosition(0);
                     state=state.turnBack;
                 }
                 break;
 
             case knockJewelRight:
-                if (turnMotorsPlus(15, 0.3)) {
+                if (turnMotorsPlus(10, 0.5)) {
                     jewelKnocker.setPosition(0);
                     state = state.turnBack;
                 }
                 break;
             case turnBack:
-                if (turnMotorsPlus(0, 0.3)){
+                if (turnMotorsPlus(0, 0.5)){
                     position = lmotor0.getCurrentPosition();
                     state = state.moveUntilScanned;
                 }

@@ -31,32 +31,28 @@ public class Drive extends VirusMethods {
             cube2.setPosition(1);
         }
         if (gamepad2.right_bumper) {
-            cube1.setPosition(.5);
-            cube2.setPosition(.5);
+            cube1.setPosition(.6);
+            cube2.setPosition(.4);
      }
-     /*   if (gamepad2.left_trigger>0.5){
-            cube3.setPosition(0);
-            cube4.setPosition(1);
+        if (gamepad2.left_trigger>0.5){
+            cube3.setPosition(.15);
+            cube4.setPosition(.85);
         }
         if (gamepad2.right_trigger>0.5){
-            cube3.setPosition(.5);
-            cube4.setPosition(.5);
-        }*/
+            cube3.setPosition(.6);
+            cube4.setPosition(.4);
+        }
         if (gamepad2.a){
-            liftLeft.setPosition(0);
-            liftRight.setPosition(0);
+            lift.setPosition(0);
         }
         if (gamepad2.b){
-            liftLeft.setPosition(.3/3 + .02);
-            liftRight.setPosition(.3 * 18.8/20/3 + .02); // sync motors
+            lift.setPosition(.3/3 + .02);
         }
         if (gamepad2.y){
-            liftLeft.setPosition(.6/3 + .02);
-            liftRight.setPosition(.6 * 18.8/20/3 + .02); // sync motors
+            lift.setPosition(.6/3 + .04);
         }
         if (gamepad2.x){
-            liftLeft.setPosition(.3 + .02);
-            liftRight.setPosition(.3 * 18.8/20 + .02); // sync motors
+            lift.setPosition(.3 + .02);
         }
 
        // Telemetry();

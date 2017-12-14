@@ -22,11 +22,8 @@ public class BlueAutonomous1 extends VirusMethods {
 
     public void init() {
         super.init();
-        liftLeft.setPosition(0);
-        liftRight.setPosition(0);
+        lift.setPosition(0);
         jewelKnocker.setPosition(0);
-        cube1.setPosition(.5);
-        cube2.setPosition(.5);
     }
 
     public void start() {
@@ -34,6 +31,7 @@ public class BlueAutonomous1 extends VirusMethods {
         lmotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rmotor0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rmotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        topGrabber();
         state=state.dropArm;
         vuforiaInit();
     }
@@ -59,7 +57,7 @@ public class BlueAutonomous1 extends VirusMethods {
         switch (state) {
             case dropArm:
 
-                jewelKnocker.setPosition(0.65);
+                jewelKnocker.setPosition(0.6);
                 colorSensor.enableLed(true);
                 waitTime(1000);
                 resetEncoder();
@@ -79,14 +77,14 @@ public class BlueAutonomous1 extends VirusMethods {
                 break;
 
             case knockJewelLeft:
-                if (turnMotorsPlus(345, 0.3)){
+                if (turnMotorsPlus(350, 0.5)){
                     jewelKnocker.setPosition(0);
                     state=state.turnBack;
                 }
                 break;
 
             case knockJewelRight:
-                if (turnMotorsPlus(15,0.3)) {
+                if (turnMotorsPlus(10,0.5)) {
                     jewelKnocker.setPosition(0);
                     state = state.turnBack;
                 }
@@ -99,12 +97,12 @@ public class BlueAutonomous1 extends VirusMethods {
                 break;
             //turnBackLeft and turnBackRight kept just in case turnMotorsPlus method doesn't work
             case turnBackLeft:
-                turnMotors(0, true, 0.3);
+                turnMotors(0, true, 0.5);
                 state = state.moveUntilScanned;
                 break;
 
             case turnBackRight:
-                turnMotors(0, false, 0.3);
+                turnMotors(0, false, 0.5);
                 state = state.moveUntilScanned;
                 break;
 
@@ -131,9 +129,9 @@ public class BlueAutonomous1 extends VirusMethods {
                 }
                 break;
             case toCryptoBox:
-                lift(0.06); //so that cube doesn't drag on ground
+                lift(0.03); //so that cube doesn't drag on ground
                 if (VuMarkStored == RelicRecoveryVuMark.LEFT){
-                    if (setMotorPositionsINCH(-30-amountMovedForward,-30-amountMovedForward,-30-amountMovedForward,-30-amountMovedForward, -.5)){
+                    if (setMotorPositionsINCH(-32.5-amountMovedForward,-32.5-amountMovedForward,-32.5-amountMovedForward,-32.5-amountMovedForward, -.5)){
                         resetEncoder();
                         telemetry.addData("reee", "e");
                         state=state.faceCryptoBox;
@@ -157,7 +155,7 @@ public class BlueAutonomous1 extends VirusMethods {
                 }
                 break;
             case faceCryptoBox:
-                if (turnMotorsPlus(270,.75)) {
+                if (turnMotorsPlus(90,.75)) {
                     resetEncoder();
                     state=state.placeGlyph;
                 }
@@ -166,10 +164,9 @@ public class BlueAutonomous1 extends VirusMethods {
                 runMotors(0.5,0.5,0.5,0.5);
                 waitTime(500);
                 runMotors(0,0,0,0);
-                cube1.setPosition(0);
-                cube2.setPosition(1);
+                topGrabber();
                 runMotors(-0.5,-0.5,-0.5,-0.5);
-                waitTime(500);
+                waitTime(400);
                 runMotors(0,0,0,0);
                 state = state.stop;
                 break;
@@ -187,6 +184,8 @@ public class BlueAutonomous1 extends VirusMethods {
                 break;
         }
         telemetry.addData("Blue: true Red: false ", knock);
+        telemetry.addData("Amount Blue:", colorSensor.blue());
+        telemetry.addData("Amount Red:", colorSensor.red());
         telemetry.addData("state", state);
         // Telemetry();,k
     }
