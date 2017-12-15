@@ -31,7 +31,7 @@ public class BlueAutonomous1 extends VirusMethods {
         lmotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rmotor0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rmotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        topGrabber();
+        topGrabberClose();
         state=state.dropArm;
         vuforiaInit();
     }
@@ -122,7 +122,7 @@ public class BlueAutonomous1 extends VirusMethods {
                     state = state.toCryptoBox ;
                 }
                 break;
-            case backOnStone: // broken plz fix
+            case backOnStone: //unused
                 if (setMotorPositions(0,0,0,0, .5)){
                     resetEncoder();
                     state=state.toCryptoBox;
@@ -148,10 +148,11 @@ public class BlueAutonomous1 extends VirusMethods {
                         resetEncoder();
                         state=state.faceCryptoBox;
                     }
-                }
-                else {
-                    //nani
-                    //program to park back onto balance stone (li)?
+                }else { //just in case of some weird circumstance that it forgets the VuMark
+                    if (setMotorPositionsINCH(-36,-36,-36,-36,.5)){ //parks in safe zone in front of cryptobox
+                        resetEncoder();
+                        state = state.stop;
+                    }
                 }
                 break;
             case faceCryptoBox:
@@ -164,7 +165,7 @@ public class BlueAutonomous1 extends VirusMethods {
                 runMotors(0.5,0.5,0.5,0.5);
                 waitTime(500);
                 runMotors(0,0,0,0);
-                topGrabber();
+                topGrabberOpen();
                 runMotors(-0.5,-0.5,-0.5,-0.5);
                 waitTime(400);
                 runMotors(0,0,0,0);

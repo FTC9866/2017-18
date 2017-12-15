@@ -220,15 +220,13 @@ public abstract class VirusMethods extends VirusHardware{
     public void lift(double position) {
         lift.setPosition(position);
     }
-    public void topGrabber(){
-        if (cube3.getPosition()<0.3){
-            cube3.setPosition(.6);
-            cube4.setPosition(.4);
-        }
-        if (cube3.getPosition()>0.3){
-            cube3.setPosition(.15);
-            cube4.setPosition(.85);
-        }
+    public void topGrabberOpen(){
+        cube3.setPosition(.15);
+        cube4.setPosition(.85);
+    }
+    public void topGrabberClose(){
+        cube3.setPosition(.6);
+        cube4.setPosition(.4);
     }
     String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";

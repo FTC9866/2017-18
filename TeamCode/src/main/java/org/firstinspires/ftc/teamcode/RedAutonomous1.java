@@ -32,6 +32,7 @@ public class RedAutonomous1 extends VirusMethods {
         lmotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rmotor0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rmotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        topGrabberClose();
         state=state.dropArm;
         vuforiaInit();
     }
@@ -123,14 +124,14 @@ public class RedAutonomous1 extends VirusMethods {
                     state = state.toCryptoBox ;
                 }
                 break;
-            case backOnStone: // broken plz fix
+            case backOnStone: //unused
                 if (setMotorPositions(0,0,0,0, .5)){
                     resetEncoder();
                     state=state.toCryptoBox;
                 }
                 break;
             case toCryptoBox:
-                lift(0.06); //so that cube doesn't drag on ground
+                lift(0.03); //so that cube doesn't drag on ground
                 if (VuMarkStored == RelicRecoveryVuMark.LEFT){
                     if (setMotorPositionsINCH(44-amountMovedForward,44-amountMovedForward,44-amountMovedForward,44-amountMovedForward, .5)){ //amountMovedForward subtracted to remove the amount of space moved forward to scan vision target
                         resetEncoder();
@@ -148,7 +149,7 @@ public class RedAutonomous1 extends VirusMethods {
                         state=state.faceCryptoBox;
                     }
                 }else { //just in case of some weird circumstance that it forgets the VuMark
-                    if (setMotorPositionsINCH(-amountMovedForward,-amountMovedForward,-amountMovedForward,-amountMovedForward,.5)){ //moves back to park on balance stone
+                    if (setMotorPositionsINCH(36,36,36,36,.5)){ //parks in safe zone in front of cryptobox
                         resetEncoder();
                         state = state.stop;
                     }
@@ -164,8 +165,7 @@ public class RedAutonomous1 extends VirusMethods {
                 runMotors(0.5,0.5,0.5,0.5);
                 waitTime(500);
                 runMotors(0,0,0,0);
-                cube1.setPosition(0);
-                cube2.setPosition(1);
+                topGrabberOpen();
                 runMotors(-0.5,-0.5,-0.5,-0.5);
                 waitTime(500);
                 runMotors(0,0,0,0);
