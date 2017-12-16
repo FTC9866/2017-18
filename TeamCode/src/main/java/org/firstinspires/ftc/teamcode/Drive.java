@@ -35,12 +35,10 @@ public class Drive extends VirusMethods {
             cube2.setPosition(.4);
      }
         if (gamepad2.left_trigger>0.5){
-            cube3.setPosition(.15);
-            cube4.setPosition(.85);
+            topGrabberOpen();
         }
         if (gamepad2.right_trigger>0.5){
-            cube3.setPosition(.6);
-            cube4.setPosition(.4);
+            topGrabberClose();
         }
         if (gamepad2.a){
             lift.setPosition(0);
