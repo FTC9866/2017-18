@@ -79,20 +79,20 @@ public class RedAutonomous2 extends VirusMethods {
                 break;
 
             case knockJewelLeft:
-                if (turnMotorsPlus(350, 0.5)){
+                if (turn(350, 0.5)){
                     jewelKnocker.setPosition(0);
                     state=state.turnBack;
                 }
                 break;
 
             case knockJewelRight:
-                if (turnMotorsPlus(10, 0.5)) {
+                if (turn(10, 0.5)) {
                     jewelKnocker.setPosition(0);
                     state = state.turnBack;
                 }
                 break;
             case turnBack:
-                if (turnMotorsPlus(0, 0.5)){
+                if (turn(0, 0.5)){
                     position = lmotor0.getCurrentPosition();
                     state = state.moveUntilScanned;
                 }
@@ -137,7 +137,7 @@ public class RedAutonomous2 extends VirusMethods {
                 }
                 break;
             case turn90:
-                if (turnMotorsPlus(270,0.5)) {
+                if (turn(270,0.5)) {
                     resetEncoder();
                     state = state.toCryptoBoxpart2;
                 }
@@ -168,7 +168,7 @@ public class RedAutonomous2 extends VirusMethods {
                 }
                 break;
             case faceCryptoBox:
-                if (turnMotorsPlus(0,.75)) {
+                if (turn(0,.75)) {
                     resetEncoder();
                     state=state.placeGlyph;
                 }

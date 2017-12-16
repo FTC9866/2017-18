@@ -7,11 +7,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 @TeleOp(name="TeleOp", group="TeleOp")
 
 public class Drive extends VirusMethods {
+
     public void start(){
         lmotor0.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lmotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rmotor0.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rmotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        mRunTime.reset();
     }
     public void loop(){
         updateControllerValues();
@@ -52,7 +54,9 @@ public class Drive extends VirusMethods {
         if (gamepad2.x){
             lift.setPosition(.3 + .02);
         }
-
+        telemetry.addData("Bottom Grabber",GPS(true, mRunTime.seconds()));
+        telemetry.addData("Top Grabber",GPS(false, mRunTime.seconds()));
+        telemetry.addData("Time Left",timeLeftGPS(mRunTime.seconds()));
        // Telemetry();
     }
 }

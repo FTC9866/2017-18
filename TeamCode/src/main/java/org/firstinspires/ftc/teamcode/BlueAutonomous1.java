@@ -77,20 +77,20 @@ public class BlueAutonomous1 extends VirusMethods {
                 break;
 
             case knockJewelLeft:
-                if (turnMotorsPlus(350, 0.5)){
+                if (turn(350, 0.5)){
                     jewelKnocker.setPosition(0);
                     state=state.turnBack;
                 }
                 break;
 
             case knockJewelRight:
-                if (turnMotorsPlus(10,0.5)) {
+                if (turn(10,0.5)) {
                     jewelKnocker.setPosition(0);
                     state = state.turnBack;
                 }
                 break;
             case turnBack:
-                if (turnMotorsPlus(0, 0.3)){
+                if (turn(0, 0.3)){
                     position = lmotor0.getCurrentPosition();
                     state = state.moveUntilScanned;
                 }
@@ -116,7 +116,7 @@ public class BlueAutonomous1 extends VirusMethods {
                     }
                 break;
             case alignStraight:
-                if (turnMotorsPlus(0,1)) {
+                if (turn(0,1)) {
                     resetEncoder();
                     counter = 0;
                     state = state.toCryptoBox ;
@@ -156,7 +156,7 @@ public class BlueAutonomous1 extends VirusMethods {
                 }
                 break;
             case faceCryptoBox:
-                if (turnMotorsPlus(90,.75)) {
+                if (turn(90,.75)) {
                     resetEncoder();
                     state=state.placeGlyph;
                 }

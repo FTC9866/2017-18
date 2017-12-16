@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
@@ -48,6 +49,7 @@ public abstract class VirusHardware extends OpMode {
     RelicRecoveryVuMark vuMark;
     OpenGLMatrix pose;
     RelicRecoveryVuMark VuMarkStored;
+    public ElapsedTime mRunTime = new ElapsedTime();
 
     public void init(){
         lmotor0 = hardwareMap.dcMotor.get("lmotor0");

@@ -24,6 +24,7 @@ public abstract class VirusMethods extends VirusHardware{
     double angleRel;
     double maxDisplacement;
     boolean triggered;
+    String[][]cryptobox = {{"brown","gray","gray"},{"brown","brown","gray"},{"gray","brown","brown"},{"gray","gray","brown"}};
     public void runMotors(double Left0, double Left1, double Right0, double Right1, double steerMagnitude){
         if (Left0!=0&&Left1!=0&&Right0!=0&&Right1!=0) {
             steerMagnitude *= 2 * Math.max(Math.max(Left0, Left1), Math.max(Right0, Right1));
@@ -97,23 +98,23 @@ public abstract class VirusMethods extends VirusHardware{
         return (!lmotor0.isBusy() && !lmotor1.isBusy() && !rmotor0.isBusy() && !rmotor1.isBusy()); //returns true when motors are not busy
     }
 
-    public boolean turn (double angle, double speed) {
-        double threshold = 1;
-        turnRate=(speed*angleDistance(angle, gyroSensor.getHeading())/90); //preferably, 90 is changed to the initial distance from the angle. I couldn't find a good way for that to work
-        if (turnRate>0){
-            turnRate+=.05; //you guys might want to experiment with this value
-        }
-        if (turnRate<0){
-            turnRate-=.05; //you guys might want to experiment with this value
-        }
-        
-        runMotors(turnRate, turnRate, -turnRate, -turnRate);
-        if (-threshold< angleDistance(angle, gyroSensor.getHeading())&& angleDistance(angle, gyroSensor.getHeading())<threshold)
-        {
-            return true;
-        }
-        return false;
-    }
+//    public boolean turn (double angle, double speed) {
+//        double threshold = 1;
+//        turnRate=(speed*angleDistance(angle, gyroSensor.getHeading())/90); //preferably, 90 is changed to the initial distance from the angle. I couldn't find a good way for that to work
+//        if (turnRate>0){
+//            turnRate+=.05; //you guys might want to experiment with this value
+//        }
+//        if (turnRate<0){
+//            turnRate-=.05; //you guys might want to experiment with this value
+//        }
+//
+//        runMotors(turnRate, turnRate, -turnRate, -turnRate);
+//        if (-threshold< angleDistance(angle, gyroSensor.getHeading())&& angleDistance(angle, gyroSensor.getHeading())<threshold)
+//        {
+//            return true;
+//        }
+//        return false;
+//    }
 
     private double angleDistance(double angle, double currentAngle) {
         double distance= angle - currentAngle;
@@ -148,7 +149,7 @@ public abstract class VirusMethods extends VirusHardware{
         }
         return angleDistance;
     }
-    public boolean turnMotorsPlus(double angle, double speed){
+    public boolean turn(double angle, double speed){
         angle=360-angle;
         double threshold = 1;
         double currentAngle = gyroSensor.getHeading();
@@ -227,6 +228,51 @@ public abstract class VirusMethods extends VirusHardware{
     public void topGrabberClose(){
         cube3.setPosition(.6);
         cube4.setPosition(.4);
+    }
+    public String GPS(boolean bottom, double time){
+        int bottomx;
+        int bottomy;
+        if (time<20){
+            bottomx = 0;
+            bottomy = 3;
+        }else if (time<40){
+            bottomx = 0;
+            bottomy = 1;
+        }else if (time<60){
+            bottomx = 1;
+            bottomy = 3;
+        }else if (time<80){
+            bottomx = 1;
+            bottomy = 1;
+        }else if (time<100){
+            bottomx = 2;
+            bottomy = 3;
+        }else{
+            bottomx = 2;
+            bottomy = 1;
+        }
+        if (bottom){
+            return cryptobox[bottomy][bottomx]; //returns block for bottom grabber
+        }else{
+            return cryptobox[bottomy-1][bottomx]; //returns block for top grabber
+        }
+    }
+    public double timeLeftGPS(double time){
+        double timeLeft;
+        if (time<20){
+            timeLeft = 20 - time;
+        }else if (time<40){
+            timeLeft = 40 - time;
+        }else if (time<60){
+            timeLeft = 60 - time;
+        }else if (time<80){
+            timeLeft = 80 - time;
+        }else if (time<100){
+            timeLeft = 100 - time;
+        }else{
+            timeLeft = 120 - time;
+        }
+        return timeLeft;
     }
     String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";

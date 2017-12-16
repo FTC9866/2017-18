@@ -25,7 +25,7 @@ public class test extends VirusMethods{
     public void loop(){
       switch (state) {
           case goToPosition:
-              if (turnMotorsPlus(90,1)) {
+              if (turn(90,1)) {
                   state=state.stop;
               }
               break;
