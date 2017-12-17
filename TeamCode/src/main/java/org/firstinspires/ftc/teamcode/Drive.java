@@ -52,13 +52,15 @@ public class Drive extends VirusMethods {
             lift.setPosition(.3/3 + .02);
         }
         if (gamepad2.y){
-            lift.setPosition(.6/3 + .04);
+            lift.setPosition(.6/3 + .05);
         }
         if (gamepad2.x){
-            lift.setPosition(.3 + .02);
+            lift.setPosition(.3 + .07);
         }
         if (gamepad2.back){
             cryptoboxSection++;
+
+
         }
         telemetry.addData("Bottom Grabber",GPS(true));
         telemetry.addData("Top Grabber",GPS(false));
