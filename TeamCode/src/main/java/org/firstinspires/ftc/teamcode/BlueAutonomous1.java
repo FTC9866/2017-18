@@ -22,6 +22,12 @@ public class BlueAutonomous1 extends VirusMethods {
 
     public void init() {
         super.init();
+        cube1.setPosition(0);
+        cube2.setPosition(1);
+        cube3.setPosition(0);
+        cube4.setPosition(1);
+        lift.setPosition(0);
+        jewelKnocker.setPosition(0);
         lift.setPosition(0);
         jewelKnocker.setPosition(0);
     }
@@ -32,6 +38,8 @@ public class BlueAutonomous1 extends VirusMethods {
         rmotor0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rmotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         topGrabberClose();
+        cube3.setPosition(.15);
+        cube4.setPosition(.85);
         state=state.dropArm;
         vuforiaInit();
     }

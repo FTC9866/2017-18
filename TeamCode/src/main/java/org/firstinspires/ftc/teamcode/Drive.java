@@ -13,7 +13,10 @@ public class Drive extends VirusMethods {
         lmotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rmotor0.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rmotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        mRunTime.reset();
+        cryptoboxSection=0;
+        topGrabberOpen();
+        cube1.setPosition(0.0);
+        cube2.setPosition(1);
     }
     public void loop(){
         updateControllerValues();
@@ -29,23 +32,23 @@ public class Drive extends VirusMethods {
             maxPower=.4;
         }
         if (gamepad2.left_bumper) {
+            topGrabberOpen();
+        }
+        if (gamepad2.right_bumper) {
+            topGrabberClose();
+        }
+        if (gamepad2.left_trigger>0.5){
             cube1.setPosition(0.0);
             cube2.setPosition(1);
         }
-        if (gamepad2.right_bumper) {
+        if (gamepad2.right_trigger>0.5){
             cube1.setPosition(.6);
             cube2.setPosition(.4);
-     }
-        if (gamepad2.left_trigger>0.5){
-            topGrabberOpen();
-        }
-        if (gamepad2.right_trigger>0.5){
-            topGrabberClose();
         }
         if (gamepad2.a){
             lift.setPosition(0);
         }
-        if (gamepad2.b){
+        if (gamepad2.b && !gamepad2.start){
             lift.setPosition(.3/3 + .02);
         }
         if (gamepad2.y){
@@ -54,9 +57,12 @@ public class Drive extends VirusMethods {
         if (gamepad2.x){
             lift.setPosition(.3 + .02);
         }
-        telemetry.addData("Bottom Grabber",GPS(true, mRunTime.seconds()));
-        telemetry.addData("Top Grabber",GPS(false, mRunTime.seconds()));
-        telemetry.addData("Time Left",timeLeftGPS(mRunTime.seconds()));
+        if (gamepad2.back){
+            cryptoboxSection++;
+        }
+        telemetry.addData("Bottom Grabber",GPS(true));
+        telemetry.addData("Top Grabber",GPS(false));
+        telemetry.addData("Cryptobox Location (relative to robot)",cryptoboxLocation());
        // Telemetry();
     }
 }

@@ -23,8 +23,12 @@ public class RedAutonomous2 extends VirusMethods {
     public void init() {
         super.init();
         jewelKnocker.setPosition(0);
-        cube1.setPosition(.5);
-        cube2.setPosition(.5);
+        cube1.setPosition(0);
+        cube2.setPosition(1);
+        cube3.setPosition(0);
+        cube4.setPosition(1);
+        lift.setPosition(0);
+        jewelKnocker.setPosition(0);
     }
 
     public void start() {

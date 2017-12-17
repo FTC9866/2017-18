@@ -23,6 +23,12 @@ public class RedAutonomous1 extends VirusMethods {
     public void init() {
         super.init();
         jewelKnocker.setPosition(0);
+        cube1.setPosition(0);
+        cube2.setPosition(1);
+        cube3.setPosition(0);
+        cube4.setPosition(1);
+        lift.setPosition(0);
+        jewelKnocker.setPosition(0);
         cube1.setPosition(.5);
         cube2.setPosition(.5);
     }
@@ -32,6 +38,8 @@ public class RedAutonomous1 extends VirusMethods {
         lmotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rmotor0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rmotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        cube3.setPosition(.15);
+        cube4.setPosition(.85);
         topGrabberClose();
         state=state.dropArm;
         vuforiaInit();

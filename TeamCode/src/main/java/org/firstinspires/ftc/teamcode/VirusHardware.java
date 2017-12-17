@@ -71,12 +71,7 @@ public abstract class VirusHardware extends OpMode {
         colorSensor = hardwareMap.colorSensor.get("colorSensor");
         gyroSensor = hardwareMap.gyroSensor.get("gryoSensor");
         while (gyroSensor.isCalibrating());
-        cube1.setPosition(0);
-        cube2.setPosition(1);
-        cube3.setPosition(.15);
-        cube4.setPosition(.85);
-        lift.setPosition(0);
-        jewelKnocker.setPosition(0);
+
 
     }
 

@@ -24,6 +24,7 @@ public abstract class VirusMethods extends VirusHardware{
     double angleRel;
     double maxDisplacement;
     boolean triggered;
+    int cryptoboxSection;
     String[][]cryptobox = {{"brown","gray","gray"},{"brown","brown","gray"},{"gray","brown","brown"},{"gray","gray","brown"}};
     public void runMotors(double Left0, double Left1, double Right0, double Right1, double steerMagnitude){
         if (Left0!=0&&Left1!=0&&Right0!=0&&Right1!=0) {
@@ -222,29 +223,29 @@ public abstract class VirusMethods extends VirusHardware{
         lift.setPosition(position);
     }
     public void topGrabberOpen(){
-        cube3.setPosition(.2);
-        cube4.setPosition(.9);
+        cube3.setPosition(.35);
+        cube4.setPosition(.85);
     }
     public void topGrabberClose(){
         cube3.setPosition(.6);
         cube4.setPosition(.4);
     }
-    public String GPS(boolean bottom, double time){
+    public String GPS(boolean bottom){
         int bottomx;
         int bottomy;
-        if (time<20){
+        if (cryptoboxSection==0){
             bottomx = 0;
             bottomy = 3;
-        }else if (time<40){
+        }else if (cryptoboxSection==1){
             bottomx = 0;
             bottomy = 1;
-        }else if (time<60){
+        }else if (cryptoboxSection==2){
             bottomx = 1;
             bottomy = 3;
-        }else if (time<80){
+        }else if (cryptoboxSection==3){
             bottomx = 1;
             bottomy = 1;
-        }else if (time<100){
+        }else if (cryptoboxSection==4){
             bottomx = 2;
             bottomy = 3;
         }else{
@@ -257,22 +258,14 @@ public abstract class VirusMethods extends VirusHardware{
             return cryptobox[bottomy-1][bottomx]; //returns block for top grabber
         }
     }
-    public double timeLeftGPS(double time){
-        double timeLeft;
-        if (time<20){
-            timeLeft = 20 - time;
-        }else if (time<40){
-            timeLeft = 40 - time;
-        }else if (time<60){
-            timeLeft = 60 - time;
-        }else if (time<80){
-            timeLeft = 80 - time;
-        }else if (time<100){
-            timeLeft = 100 - time;
+    public String cryptoboxLocation(){
+        if (cryptoboxSection==0 || cryptoboxSection==1){
+            return "Left";
+        }else if (cryptoboxSection==2||cryptoboxSection==3){
+            return "Center";
         }else{
-            timeLeft = 120 - time;
+            return "Right";
         }
-        return timeLeft;
     }
     String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
