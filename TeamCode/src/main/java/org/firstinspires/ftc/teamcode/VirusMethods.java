@@ -22,10 +22,15 @@ public abstract class VirusMethods extends VirusHardware{
     double amountMovedForward;
     double turnRate;
     double angleRel;
-    double maxDisplacement;
-    boolean triggered;
     int cryptoboxSection;
     String[][]cryptobox = {{"brown","gray","gray"},{"brown","brown","gray"},{"gray","brown","brown"},{"gray","gray","brown"}};
+    /*
+        runMotors Method uses double values to set a constant speed for the wheel motors (setPower), two on each side. It also includes
+        a steer magnitude in order to offset wheels so they can turn.
+        0 = front wheel
+        1 = backwheel
+        SteerMagnitude = offset for wheels to turn
+     */
     public void runMotors(double Left0, double Left1, double Right0, double Right1, double steerMagnitude){
         if (Left0!=0&&Left1!=0&&Right0!=0&&Right1!=0) {
             steerMagnitude *= 2 * Math.max(Math.max(Left0, Left1), Math.max(Right0, Right1));
@@ -46,19 +51,7 @@ public abstract class VirusMethods extends VirusHardware{
     }
 
     public void runMotors(double Left0, double Left1, double Right0, double Right1){
-        lmotor0.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        lmotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rmotor0.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rmotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //make sure no exception thrown if power > 0
-        Left0 = Range.clip(Left0, -maxPower, maxPower);
-        Left1 = Range.clip(Left1, -maxPower, maxPower);
-        Right0 = Range.clip(Right0, -maxPower, maxPower);
-        Right1 = Range.clip(Right1, -maxPower, maxPower);
-        rmotor0.setPower(Right0);
-        rmotor1.setPower(Right1);
-        lmotor0.setPower(Left0);
-        lmotor1.setPower(Left1);
+        runMotors(Left0, Left1, Right0, Right1, 0);
     }
     public void runMotorsAuto(double Left0, double Left1, double Right0, double Right1){
         //make sure no exception thrown if power > 0
@@ -71,6 +64,10 @@ public abstract class VirusMethods extends VirusHardware{
         lmotor0.setPower(Left0);
         lmotor1.setPower(Left1);
     }
+    /*
+    setMotorPositions uses uses encoders to move a certain distance in encoder units.
+     */
+
     public boolean setMotorPositions(int Left0, int Left1, int Right0, int Right1, double power) {
         if (counter == 0) { //makes sure this is only run once, reset back to 0 when OpMode starts or resetEncoders is called
             lmotor0.setTargetPosition(Left0);
@@ -98,61 +95,13 @@ public abstract class VirusMethods extends VirusHardware{
         }
         return (!lmotor0.isBusy() && !lmotor1.isBusy() && !rmotor0.isBusy() && !rmotor1.isBusy()); //returns true when motors are not busy
     }
-
-//    public boolean turn (double angle, double speed) {
-//        double threshold = 1;
-//        turnRate=(speed*angleDistance(angle, gyroSensor.getHeading())/90); //preferably, 90 is changed to the initial distance from the angle. I couldn't find a good way for that to work
-//        if (turnRate>0){
-//            turnRate+=.05; //you guys might want to experiment with this value
-//        }
-//        if (turnRate<0){
-//            turnRate-=.05; //you guys might want to experiment with this value
-//        }
-//
-//        runMotors(turnRate, turnRate, -turnRate, -turnRate);
-//        if (-threshold< angleDistance(angle, gyroSensor.getHeading())&& angleDistance(angle, gyroSensor.getHeading())<threshold)
-//        {
-//            return true;
-//        }
-//        return false;
-//    }
-
-    private double angleDistance(double angle, double currentAngle) {
-        double distance= angle - currentAngle;
-        if (angle < -180){
-            distance+=180;
-        }
-        return distance;
-    }
-
-    public boolean turnMotors(double angle, boolean right, double speed) {
-        turnRate=(speed*absoluteDistance(angle,gyroSensor.getHeading())/90);
-        if (right) {
-            runMotors(-turnRate, -turnRate, turnRate, turnRate);
-        } else {
-            runMotors(turnRate, turnRate, -turnRate, -turnRate);
-        }
-        telemetry.addData("distance left:", absoluteDistance(angle, gyroSensor.getHeading()));
-
-        if (absoluteDistance(angle, gyroSensor.getHeading()) < 15) {
-
-            return true;
-        }
-        return false;
-    }
-
-    private double absoluteDistance(double angle1, double angle2) {
-
-        double angleDistance = Math.abs(angle1 - angle2);
-
-        if (angleDistance > 180) {
-            angleDistance = 360 - angleDistance;
-        }
-        return angleDistance;
-    }
+/*
+turn requires an angle and a speed to allow the robot to rotate to the specified angle using the shortest distance
+ */
     public boolean turn(double angle, double speed){
         angle=360-angle;
         double threshold = 1;
+        // threshold is a margin of error of one degree of the specified angle, the robot will stop.
         double currentAngle = gyroSensor.getHeading();
         angleRel = relativeAngle(angle, currentAngle); //should be distance from current angle (negative if to the counterclockwise, positive if to the clockwise)
         turnRate = speed*angleRel/90;

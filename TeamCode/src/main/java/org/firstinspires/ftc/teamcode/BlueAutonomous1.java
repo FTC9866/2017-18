@@ -95,21 +95,12 @@ public class BlueAutonomous1 extends VirusMethods {
                     state = state.turnBack;
                 }
                 break;
+
             case turnBack:
                 if (turn(0, 0.7)){
                     position = lmotor0.getCurrentPosition();
                     state = state.moveUntilScanned;
                 }
-                break;
-            //turnBackLeft and turnBackRight kept just in case turnMotorsPlus method doesn't work
-            case turnBackLeft:
-                turnMotors(0, true, 0.5);
-                state = state.moveUntilScanned;
-                break;
-
-            case turnBackRight:
-                turnMotors(0, false, 0.5);
-                state = state.moveUntilScanned;
                 break;
 
             case moveUntilScanned:
@@ -121,6 +112,7 @@ public class BlueAutonomous1 extends VirusMethods {
                         state = state.alignStraight;
                     }
                 break;
+
             case alignStraight:
                 if (turn(0,1)) {
                     resetEncoder();
@@ -128,12 +120,7 @@ public class BlueAutonomous1 extends VirusMethods {
                     state = state.toCryptoBox ;
                 }
                 break;
-            case backOnStone: //unused
-                if (setMotorPositions(0,0,0,0, .5)){
-                    resetEncoder();
-                    state=state.toCryptoBox;
-                }
-                break;
+
             case toCryptoBox:
                 lift(0.03); //so that cube doesn't drag on ground
                 if (VuMarkStored == RelicRecoveryVuMark.LEFT){
@@ -161,12 +148,14 @@ public class BlueAutonomous1 extends VirusMethods {
                     }
                 }
                 break;
+
             case faceCryptoBox:
                 if (turn(90,.75)) {
                     resetEncoder();
                     state=state.placeGlyph;
                 }
                 break;
+
             case placeGlyph:
                 runMotors(0.5,0.5,0.5,0.5);
                 waitTime(500);
@@ -177,6 +166,7 @@ public class BlueAutonomous1 extends VirusMethods {
                 runMotors(0,0,0,0);
                 state = state.stop;
                 break;
+
             case debug:
                 //telemetry.addData("done","done");
                 telemetry.addData("setMotor returns", setMotor);
